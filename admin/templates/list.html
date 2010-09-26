@@ -1,0 +1,17 @@
+<table>
+	<thead>
+		<tr>
+			{{#fields}}
+				<td>{{name}}</td>
+			{{/fields}}
+		</tr>
+	</thead>
+</table>
+
+<ul>
+{{#values}}
+	<li>{{key}}</li>
+{{/values}}
+</ul>
+
+<a href="/admin/edit/{{model}}">Add</a>
