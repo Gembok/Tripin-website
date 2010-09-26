@@ -2,6 +2,7 @@ from google.appengine.ext import webapp
 
 import models
 import view
+from forms import Form
 
 class AdminHandler(webapp.RequestHandler):
     def to_dict(self, model):
@@ -40,31 +41,25 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = int(self.request.get('_id', 0))
-        form = models.registered.get(model, None)
         if id:
-            item = getattr(models, form.model).get(db.Key.from_path(form.model.kind(), id))
+            instance = adminmodel.model.get(db.Key.from_path(adminmodel.model.kind(), id))
         else:
-            item = None
+            instance = None
+        form = models.registered.get(model, None)(instance=instance)
         data = {
-            'form': form(instance=item),
+            'form': form.render(),
             '_id': id
         }
-        self.render('edit.html', data)    
+        self.render('edit.html', data)
     
-    def post(self):
-        id = int(self.request.get('_id'))
-        form = models.registered.get(model, None)
-        item = getattr(models, form.model).get(db.Key.from_path())
-        post = getattr(models, form)(data=self.request.POST, instance=item)
-        if post.is_valid():
-            entity = post.save(commit=False)
-            entity.put()
+    def post(self, model):
+        id = int(self.request.get('_id', 0))
+        adminmodel = models.registered.get(model, None)
+        if id:
+            item = adminmodel.model.get(db.Key.from_path(adminmodel.model.kind(), id))
         else:
-            data = {
-                'form': post,
-                '_id': id
-            }
-            self.render('edit.html', data)
+            item = adminmodel.model()
+        
 
 class DeleteHandler(AdminHandler):
     def get(self):

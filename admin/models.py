@@ -1,13 +1,9 @@
-from google.appengine.ext.webapp import template
-from google.appengine.ext.db import djangoforms
-
+import forms
 import front.models
 
-class MemberForm(djangoforms.ModelForm):
-    model = front.models.Member
-    show = ['name', 'bio']
-    class Meta:
-        model = front.models.Member
-        exclude = []
+class Member(forms.Form):
+	model = front.models.Member
+	show = ['name', 'bio', 'image']
+	edit = show
 
-registered = {'member': MemberForm}
+registered = {'member': Member}
