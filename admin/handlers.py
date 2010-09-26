@@ -28,7 +28,7 @@ class ModelsHandler(AdminHandler):
 
 class ListHandler(AdminHandler):
     def get(self, model):
-        m = models.registered.get(model, models.Model)
+        m = models.registered.get(model, None)
         values = m.model.all().fetch(10)
         data = {
             'model': model,
@@ -38,11 +38,33 @@ class ListHandler(AdminHandler):
         self.render('list.html', data)
 
 class EditHandler(AdminHandler):
-    def get(self):
-        pass
+    def get(self, model):
+        id = int(self.request.get('_id', 0))
+        form = models.registered.get(model, None)
+        if id:
+            item = getattr(models, form.model).get(db.Key.from_path(form.model.kind(), id))
+        else:
+            item = None
+        data = {
+            'form': form(instance=item),
+            '_id': id
+        }
+        self.render('edit.html', data)    
     
     def post(self):
-        pass
+        id = int(self.request.get('_id'))
+        form = models.registered.get(model, None)
+        item = getattr(models, form.model).get(db.Key.from_path())
+        post = getattr(models, form)(data=self.request.POST, instance=item)
+        if post.is_valid():
+            entity = post.save(commit=False)
+            entity.put()
+        else:
+            data = {
+                'form': post,
+                '_id': id
+            }
+            self.render('edit.html', data)
 
 class DeleteHandler(AdminHandler):
     def get(self):
