@@ -33,31 +33,29 @@ class ListHandler(AdminHandler):
         data = {
             'model': model,
             'fields': [{'name': i} for i in m.show],
-            'values': [{'key': i.key()} for i in values]
+            'values': [{'id': i.key().id(), 'model': model} for i in values]
         }
         self.render('list.html', data)
 
 class EditHandler(AdminHandler):
     def get(self, model):
         id = int(self.request.get('_id', 0))
-        adminmodel = models.registered.get(model, models.AdminModel)(id=id)
+        adminmodel = models.registered.get(model, models.AdminModel)(id=id, url=self.request.path)
         data = {
-            'form': adminmodel.render_form(),
-            '_id': id
+            'form': adminmodel.render_form()
         }
         self.render('edit.html', data)
     
     def post(self, model):
         id = int(self.request.get('_id', 0))
-        print self.request.POST
-        adminmodel = models.registered.get(model, None)(id=id, data=self.request.POST)
+        adminmodel = models.registered.get(model, None)(id=id, data=self.request.POST, url=self.request.path)
         if adminmodel.validate():
             adminmodel.save()
             self.response.out.write('ok')
         else:
+            self.response.out.write(adminmodel.errors())
             data = {
-                'form': adminmodel.render_form(),
-                '_id': id
+                'form': adminmodel.render_form()
             }
             self.render('edit.html', data)
 
