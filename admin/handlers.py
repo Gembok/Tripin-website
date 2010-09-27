@@ -2,7 +2,6 @@ from google.appengine.ext import webapp
 
 import models
 import view
-from forms import Form
 
 class AdminHandler(webapp.RequestHandler):
     def to_dict(self, model):
@@ -41,25 +40,26 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = int(self.request.get('_id', 0))
-        if id:
-            instance = adminmodel.model.get(db.Key.from_path(adminmodel.model.kind(), id))
-        else:
-            instance = None
-        form = models.registered.get(model, None)(instance=instance)
+        adminmodel = models.registered.get(model, models.AdminModel)(id=id)
         data = {
-            'form': form.render(),
+            'form': adminmodel.render_form(),
             '_id': id
         }
         self.render('edit.html', data)
     
     def post(self, model):
         id = int(self.request.get('_id', 0))
-        adminmodel = models.registered.get(model, None)
-        if id:
-            item = adminmodel.model.get(db.Key.from_path(adminmodel.model.kind(), id))
+        print self.request.POST
+        adminmodel = models.registered.get(model, None)(id=id, data=self.request.POST)
+        if adminmodel.validate():
+            adminmodel.save()
+            self.response.out.write('ok')
         else:
-            item = adminmodel.model()
-        
+            data = {
+                'form': adminmodel.render_form(),
+                '_id': id
+            }
+            self.render('edit.html', data)
 
 class DeleteHandler(AdminHandler):
     def get(self):
