@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Trip in - Tomber les Masques</title>
+	
+	<script src="/static/front/js/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-69644-11']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</head>
+<body>
+	<style type="text/css" media="all">
+		* {margin: 0; padding: 0;}
+		
+		body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; overflow: hidden;}
+		
+		#content {margin: 0 auto; position: relative; text-align: center; width: 450px; z-index: 1;}
+		
+		#title {background-image: url(/static/front/img/title.png); height: 141px; margin: 20px auto; width: 300px;}
+		
+		.background {height: 800px; position: absolute; top: 0; z-index: -1;}
+		#back-left {background-image: url(/static/front/img/rideaux-left.png); left: -280px; width: 514px;}
+		#back-right {background-image: url(/static/front/img/rideaux-right.png); right: -280px; width: 501px;}
+		
+		#count {font-weight: bold; font-size: 2em; margin: 10px 0;}
+		
+		#contact {margin-top: 200px;}
+		a {color: #fff; text-decoration: none;}
+	</style>
+	
+	<script type="text/javascript" charset="utf-8">
+		function addzero(n) {
+			return (n < 10) ? '0'+n : n;
+		}
+		
+		function countdown() {
+			today = new Date();
+			target = new Date("November 18, 2010");
+			msPerDay = 24 * 60 * 60 * 1000 ;
+			timeLeft = (target.getTime() - today.getTime());
+			e_daysLeft = timeLeft / msPerDay;
+			daysLeft = Math.floor(e_daysLeft);
+			e_hrsLeft = (e_daysLeft - daysLeft)*24;
+			hrsLeft = Math.floor(e_hrsLeft);
+			e_minsLeft = (e_hrsLeft - hrsLeft)*60;
+			minsLeft = Math.floor(e_minsLeft);
+			secsLeft = Math.floor((e_minsLeft - minsLeft)*60);	
+			
+			togo = 'Il reste... <div id="count">';
+			togo += addzero(daysLeft)+' jours<br /> '+addzero(hrsLeft)+':'+addzero(minsLeft)+':'+addzero(secsLeft);
+			togo += '</div> ...avant la sortie de l\'album <br /><strong>Tomber les Masques</strong>';
+			
+			$('#counter').html(togo);
+		}
+		
+		$(function() {
+			countdown();
+			setInterval("countdown()", 1000);
+		});
+	</script>
+		
+	<div id="content">
+		<div id="title"></div>
+		<div id="counter"></div>
+		
+		<div id="contact">
+			<a href="http://www.myspace.com/tripinproject">MySpace</a>
+		</div>
+		
+		<div id="back-left" class="background"></div>
+		<div id="back-right" class="background"></div>
+	</div>
+</body>

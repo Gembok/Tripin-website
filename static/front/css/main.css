@@ -1,0 +1,29 @@
+body, div, ul, li, h1, h2, h3, h4, h5, h6 {margin: 0; padding: 0;}
+
+/* tags */
+ul {list-style-type: none;}
+h1 {font-size: 16px;}
+
+/* links */
+a {color: #fff; text-decoration: none;}
+a:hover {color: #A8332F;}
+
+/* structure */
+body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; overflow: hidden;}
+
+#content {margin: 0 auto; position: relative; text-align: center; width: 500px; z-index: 1;}
+
+#title {background-image: url(/static/front/img/title.png); height: 141px; margin: 20px auto; width: 300px;}
+
+#menu li {font-size: 20px; padding-bottom: 10px;}
+
+#musique {left: 20px; position: absolute; top: 20px; width: 230px; height: 300px;}
+
+#agenda {position: absolute; right: 20px; top: 20px; width: 230px;}
+#agenda h1 {font-size: 16px;}
+#agenda address {font-style: normal;}
+
+
+.background {height: 800px; position: absolute; top: 0; z-index: -1;}
+#back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
+#back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
