@@ -1,7 +1,5 @@
-import unittest
-
 import handlers
 
-class AdminTest(unittest.TestCase):
+class TestAdmin:
     def test(self):
-        pass
+        assert False

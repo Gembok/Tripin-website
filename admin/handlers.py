@@ -1,7 +1,12 @@
-from google.appengine.ext import webapp
+import datetime
 
+from google.appengine.ext import webapp
+from google.appengine.ext import db, blobstore
+
+import front
 import models
 import view
+
 
 class AdminHandler(webapp.RequestHandler):
     def to_dict(self, model):
@@ -10,15 +15,32 @@ class AdminHandler(webapp.RequestHandler):
             val = value.get_value_for_datastore(model)
             if isinstance(val, datetime.datetime):
                 ms = time.mktime(val.utctimetuple()) * 1000
-                ms += getattr(value, 'microseconds', 0) / 1000
+                ms += getattr(val, 'microseconds', 0) / 1000
                 val = int(ms)
             elif isinstance(val, db.Model):
                 val = self.to_dict(val)
-                data[key] = val
-                return data
+            data[key] = val
+            try:
+                data['id'] = model.key().id()
+            except:
+                pass
+        return data
+    
+    def to_dicts(self, models):
+        data = []
+        for model in models:
+            data.append(self.to_dict(model))
+        return data
+    
+    def id(self):
+        return int(self.request.get('id', 0))
+    
+    def get_model(self, model, **kw):
+        return models.registered.get(model, models.AdminModel)(**kw)  #TODO:check if model exists
     
     def render(self, filename, data):
-        view.render(self, filename, data, 'admin')
+        view.render_page(self, filename, data)
+
 
 class ModelsHandler(AdminHandler):
     def get(self):
@@ -26,32 +48,35 @@ class ModelsHandler(AdminHandler):
         data = {'models': names}
         self.render('models.html', data)
 
+
 class ListHandler(AdminHandler):
     def get(self, model):
-        m = models.registered.get(model, None)
-        values = m.model.all().fetch(10)
+        adminmodel = self.get_model(model)
+        items = adminmodel.model.all().fetch(10)
+        dicts = self.to_dicts(items)
         data = {
             'model': model,
-            'fields': [{'name': i} for i in m.show],
-            'values': [{'id': i.key().id(), 'model': model} for i in values]
+            'fields': [{'name': i} for i in adminmodel.show],
+            'items': dicts
         }
         self.render('list.html', data)
 
+
 class EditHandler(AdminHandler):
     def get(self, model):
-        id = int(self.request.get('_id', 0))
-        adminmodel = models.registered.get(model, models.AdminModel)(id=id, url=self.request.path)
+        id = self.id()
+        adminmodel = self.get_model(model, id=id, url=self.request.path)
         data = {
             'form': adminmodel.render_form()
         }
         self.render('edit.html', data)
     
     def post(self, model):
-        id = int(self.request.get('_id', 0))
-        adminmodel = models.registered.get(model, None)(id=id, data=self.request.POST, url=self.request.path)
+        id = self.id()
+        adminmodel = self.get_model(model, id=id, data=self.request.POST, url=self.request.path)
         if adminmodel.validate():
-            adminmodel.save()
-            self.response.out.write('ok')
+            key = adminmodel.save()
+            self.redirect('/admin/list/%s' % model)
         else:
             self.response.out.write(adminmodel.errors())
             data = {
@@ -59,6 +84,14 @@ class EditHandler(AdminHandler):
             }
             self.render('edit.html', data)
 
+
 class DeleteHandler(AdminHandler):
-    def get(self):
-        pass
+    def get(self, model):
+        id = self.id()
+        confirm = int(self.request.get('confirm', 0))
+        if not confirm:
+            self.response.out.write('<a href="?id=%d&confirm=1">Confirm</a> - <a href="/admin/list/%s">Cancel</a>' % (id, model))
+        else:
+            admin_model = self.get_model(model, id=id)
+            admin_model.delete()
+            self.redirect('/admin/list/%s' % model)

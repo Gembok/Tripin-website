@@ -1,17 +1,31 @@
-<table>
+{% extends "base.html" %}
+
+{% block content %}
+<!-- <table>
 	<thead>
 		<tr>
-			{{#fields}}
-				<td>{{name}}</td>
-			{{/fields}}
+			{% for f in fields %}
+				<td>{{f.name}}</td>
+			{% endfor %}
 		</tr>
 	</thead>
-</table>
+	<tbody>
+	{% for item in items %}
+		<tr>
+			<td>
+				{{ item }}
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table> -->
 
 <ul>
-{{#values}}
-	<li><a href="/admin/edit/{{model}}/{{id}}">{{id}}</a></li>
-{{/values}}
+{% for item in items %}
+	<li><a href="/admin/edit/{{ model }}/?id={{item.id}}">{{ item }}</a> - <a href="/admin/delete/{{model}}/?id={{item.id}}">Delete</a></li>
+{% endfor %}
 </ul>
 
-<a href="/admin/edit/{{model}}">Add</a>
+<a href="/admin/edit/{{ model }}">Add</a>
+
+{% endblock %}

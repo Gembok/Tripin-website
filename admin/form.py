@@ -38,7 +38,7 @@ class FormField:
             'name': self.name,
             'default': self.value()
         }
-        return view.render_form_element(f, data)
+        return view.render_form(f, data)
 
 class Input(FormField):
     pass

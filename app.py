@@ -8,6 +8,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
 import admin.handlers
+import front.handlers
 
 class BaseHandler(webapp.RequestHandler):
     def to_dict(self, model):
@@ -28,6 +29,7 @@ class BaseHandler(webapp.RequestHandler):
 
 
 routes = [
+    # (r'^/test', front.handlers.TestHandler),
     (r'^/admin/?$', admin.handlers.ModelsHandler),
     (r'^/admin/list/(\w+)/?$', admin.handlers.ListHandler),
     (r'^/admin/edit/(\w+)/?$', admin.handlers.EditHandler),
