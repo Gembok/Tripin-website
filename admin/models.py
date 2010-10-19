@@ -36,10 +36,22 @@ class AdminModel:
     
     def get_field_type(self, field):
         """Returns the form field type."""
-        if isinstance(field, db.StringProperty):
+        if isinstance(field, (db.StringProperty, db.IntegerProperty, db.FloatProperty)):
             form_field = form.Input
         elif isinstance(field, db.TextProperty):
             form_field = form.Textarea
+        elif isinstance(field, db.BooleanProperty):
+            form_field = form.Checkbox
+        elif isinstance(field, (db.DateProperty, db.DateTimeProperty, db.TimeProperty)):
+            form_field = form.Date
+        elif isinstance(field, db.EmailProperty):
+            form_field = form.Email
+        elif isinstance(field, db.LinkProperty):
+            form_field = form.Link
+        elif isinstance(field, (db.ListProperty, db.StringListProperty)):
+            form_field = form.Select
+        elif isinstance(field, (db.ReferenceProperty, db.SelfReferenceProperty)):
+            form_field = form.FormField
         elif isinstance(field, blobstore.BlobReferenceProperty):
             self.blobstore = True
             form_field = form.File

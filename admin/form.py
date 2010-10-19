@@ -29,22 +29,52 @@ class FormField:
             return self.property.default_value()
     
     def get_filename(self):
-        return self.__class__.__name__.lower()+'.html'
+        try:
+            return '%s.html' % self.filename
+        except AttributeError:
+            return self.__class__.__name__.lower()+'.html'
     
     def render(self):
-        f = self.get_filename()
-        data = {
+        return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'name': self.name,
             'default': self.value()
-        }
-        return view.render_form(f, data)
+        })
+
 
 class Input(FormField):
     pass
 
+
 class Textarea(FormField):
     pass
 
+
+class Checkbox(FormField):
+    def render(self):
+        return view.render_form(self.get_filename(), {
+            'title': self.property.verbose_name,
+            'name': self.name,
+            'checked': 'checked="checked"' if self.value() else ""
+        })
+
+
+class Select(FormField):
+    pass
+
+
+class Date(FormField):
+    pass
+
+
+class Link(FormField):
+    filename = 'input'
+
+
+class Email(FormField):
+    filename = 'input'
+
+
 class File(FormField):
     pass
+

@@ -1,0 +1,8 @@
+<p>
+	<label for="{{name}}">{{title}}</label>
+	<select name="{{name}}">
+	{% for opt in options %}
+		<option value="{{opt.value}}">
+	{% endfor %}
+	</select>
+</p>
