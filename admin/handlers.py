@@ -1,14 +1,16 @@
 import datetime
+import urllib
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 import front
 import models
 import view
 
 
-class AdminHandler(webapp.RequestHandler):
+class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
     def to_dict(self, model):
         data = {}
         for key, value in model.properties().iteritems():
@@ -34,6 +36,9 @@ class AdminHandler(webapp.RequestHandler):
     
     def id(self):
         return int(self.request.get('id', 0))
+    
+    def get_url(self):
+        return '%s?%s' % (self.request.path, self.request.query_string)
     
     def get_model(self, model, **kw):
         return models.registered.get(model, models.AdminModel)(**kw)  #TODO:check if model exists
@@ -65,7 +70,7 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = self.id()
-        adminmodel = self.get_model(model, id=id, url=self.request.path)
+        adminmodel = self.get_model(model, id=id, url=self.get_url())
         data = {
             'form': adminmodel.render_form()
         }
@@ -73,7 +78,9 @@ class EditHandler(AdminHandler):
     
     def post(self, model):
         id = self.id()
-        adminmodel = self.get_model(model, id=id, data=self.request.POST, url=self.request.path)
+        print 'post() requested'
+        print self.request.POST
+        adminmodel = self.get_model(model, id=id, data=self.request.POST, url=self.get_url())
         if adminmodel.validate():
             key = adminmodel.save()
             self.redirect('/admin/list/%s' % model)

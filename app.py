@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, config.EXT)
 
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
+from google.appengine.ext.webapp import util, blobstore_handlers
 
 import admin.handlers
 import front.handlers
@@ -28,12 +28,19 @@ class BaseHandler(webapp.RequestHandler):
 		view.render(self, filename, data)
 
 
+class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, resource):
+        resource = str(urllib.unquote(resource))
+        blob_info = blobstore.BlobInfo.get(resource)
+        self.send_blob(blob_info)
+
 routes = [
     # (r'^/test', front.handlers.TestHandler),
     (r'^/admin/?$', admin.handlers.ModelsHandler),
     (r'^/admin/list/(\w+)/?$', admin.handlers.ListHandler),
     (r'^/admin/edit/(\w+)/?$', admin.handlers.EditHandler),
     (r'^/admin/delete/(\w+)/?$', admin.handlers.DeleteHandler),
+    (r'^/serve/([^/]+)?', ServeHandler)
     # (r'^/(.*)/?$', front.handlers.MainHandler),
 ]
 

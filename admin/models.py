@@ -16,7 +16,7 @@ class AdminModel:
         (form.Email,        db.EmailProperty),
         (form.Link,         db.LinkProperty),
         (form.Select,       (db.ListProperty, db.StringListProperty)),
-        (form.FormField,    (db.ReferenceProperty, db.SelfReferenceProperty)),
+        (form.FormField,    db.ReferenceProperty),
         (form.File,         blobstore.BlobReferenceProperty),
         (form.FormField,    db.Property)
     ]
@@ -97,7 +97,7 @@ class AdminModel:
 
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio']
+	show = ['name', 'bio', 'image']
 	edit = show
 
 registered = {'member': Member}
