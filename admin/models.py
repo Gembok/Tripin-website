@@ -8,6 +8,18 @@ class AdminModel:
     model = None
     edit = []
     show = []
+    mappings = [
+        (form.Input,        (db.StringProperty, db.IntegerProperty, db.FloatProperty)),
+        (form.Textarea,     db.TextProperty),
+        (form.Checkbox,     db.BooleanProperty),
+        (form.Date,         (db.DateProperty, db.DateTimeProperty, db.TimeProperty)),
+        (form.Email,        db.EmailProperty),
+        (form.Link,         db.LinkProperty),
+        (form.Select,       (db.ListProperty, db.StringListProperty)),
+        (form.FormField,    (db.ReferenceProperty, db.SelfReferenceProperty)),
+        (form.File,         blobstore.BlobReferenceProperty),
+        (form.FormField,    db.Property)
+    ]
     
     def __init__(self, data=None, id=None, url=None):
         self.data = dict(data) if data else None
@@ -36,28 +48,14 @@ class AdminModel:
     
     def get_field_type(self, field):
         """Returns the form field type."""
-        if isinstance(field, (db.StringProperty, db.IntegerProperty, db.FloatProperty)):
-            form_field = form.Input
-        elif isinstance(field, db.TextProperty):
-            form_field = form.Textarea
-        elif isinstance(field, db.BooleanProperty):
-            form_field = form.Checkbox
-        elif isinstance(field, (db.DateProperty, db.DateTimeProperty, db.TimeProperty)):
-            form_field = form.Date
-        elif isinstance(field, db.EmailProperty):
-            form_field = form.Email
-        elif isinstance(field, db.LinkProperty):
-            form_field = form.Link
-        elif isinstance(field, (db.ListProperty, db.StringListProperty)):
-            form_field = form.Select
-        elif isinstance(field, (db.ReferenceProperty, db.SelfReferenceProperty)):
-            form_field = form.FormField
-        elif isinstance(field, blobstore.BlobReferenceProperty):
+        for mapping in self.mappings:
+            if isinstance(field, mapping[1]):
+                self.check_blobstore(mapping[1])
+                return mapping[0]
+    
+    def check_blobstore(self, prop):
+        if prop is blobstore.BlobReferenceProperty:
             self.blobstore = True
-            form_field = form.File
-        else:
-            form_field = form.FormField
-        return form_field
     
     def validate(self):
         """Validates all the fields according to field rules."""
