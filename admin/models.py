@@ -42,12 +42,15 @@ class AdminModel:
         for name in self.edit:
             try:
                 field = base_fields[name]
-                instance_value = getattr(self.instance, name) if self.instance else None
+            except KeyError: continue
+            instance_value = getattr(self.instance, name) if self.instance else None
+            try:
                 post_value = self.data[name] if self.data else None
-                form_field = self.get_field_type(field)
-                self.fields.append(form_field(field, name, instance_value, post_value))
             except KeyError:
-                pass
+                post_value = None
+            form_field = self.get_field_type(field)
+            self.fields.append(form_field(field, name, instance_value, post_value))
+    
     
     def get_field_type(self, field):
         """Returns the form field type."""

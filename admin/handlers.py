@@ -72,6 +72,7 @@ class EditHandler(AdminHandler):
         id = self.id()
         adminmodel = self.get_model(model, id=id, url=self.get_url())
         data = {
+            'model': model,
             'form': adminmodel.render_form()
         }
         self.render('edit.html', data)

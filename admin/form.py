@@ -56,7 +56,7 @@ class Textarea(FormField):
 
 class Checkbox(FormField):
     def parse_value(self):
-        return bool(self.post_value)
+        return bool(self.post_value) if self.post_value else False
     
     def render(self):
         return view.render_form(self.get_filename(), {
