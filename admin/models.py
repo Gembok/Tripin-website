@@ -40,11 +40,14 @@ class AdminModel:
         self.fields = []
         base_fields = self.model.properties()
         for name in self.edit:
-            field = base_fields[name]
-            instance_value = getattr(self.instance, name) if self.instance else None
-            post_value = self.data[name] if self.data else None
-            form_field = self.get_field_type(field)
-            self.fields.append(form_field(field, name, instance_value, post_value))
+            try:
+                field = base_fields[name]
+                instance_value = getattr(self.instance, name) if self.instance else None
+                post_value = self.data[name] if self.data else None
+                form_field = self.get_field_type(field)
+                self.fields.append(form_field(field, name, instance_value, post_value))
+            except KeyError:
+                pass
     
     def get_field_type(self, field):
         """Returns the form field type."""
@@ -97,7 +100,7 @@ class AdminModel:
 
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio', 'image']
+	show = ['name', 'bio', 'image', 'one']
 	edit = show
 
 registered = {'member': Member}

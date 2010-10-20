@@ -10,17 +10,21 @@ class FormField:
         self.error_msg = None
     
     def validate(self):
+        newval = self.parse_value()
         try:
-            self.model_value = self.property.validate(self.post_value)
+            self.model_value = self.property.validate(newval)
             return True
         except Exception, e:
             self.error_msg = '%s has error: %s' % (self.name, e)
             return False
     
+    def parse_value(self):
+        return self.post_value
+    
     def error(self):
         return self.error_msg
     
-    def value(self):
+    def value_for_form(self):
         if self.instance_value is not None:
             return self.instance_value
         elif self.post_value is not None:
@@ -38,7 +42,7 @@ class FormField:
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'name': self.name,
-            'default': self.value()
+            'default': self.value_for_form()
         })
 
 
@@ -51,11 +55,14 @@ class Textarea(FormField):
 
 
 class Checkbox(FormField):
+    def parse_value(self):
+        return bool(self.post_value)
+    
     def render(self):
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'name': self.name,
-            'checked': 'checked="checked"' if self.value() else ""
+            'checked': 'checked="checked"' if self.value_for_form() else ""
         })
 
 

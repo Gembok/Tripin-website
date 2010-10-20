@@ -78,15 +78,13 @@ class EditHandler(AdminHandler):
     
     def post(self, model):
         id = self.id()
-        print 'post() requested'
-        print self.request.POST
         adminmodel = self.get_model(model, id=id, data=self.request.POST, url=self.get_url())
         if adminmodel.validate():
             key = adminmodel.save()
             self.redirect('/admin/list/%s' % model)
         else:
-            self.response.out.write(adminmodel.errors())
             data = {
+                'errors': adminmodel.errors(),
                 'form': adminmodel.render_form()
             }
             self.render('edit.html', data)
