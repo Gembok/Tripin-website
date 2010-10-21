@@ -86,6 +86,10 @@ class File(FormField):
     pass
 
 
+class FileList(FormField):
+    pass
+
+
 class Reference(FormField):
     filename = 'select'
     

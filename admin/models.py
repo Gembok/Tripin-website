@@ -60,8 +60,7 @@ class AdminModel:
                 return mapping[0]
     
     def check_blobstore(self, prop):
-        if prop is blobstore.BlobReferenceProperty:
-            self.blobstore = True
+        self.blobstore = prop is blobstore.BlobReferenceProperty
     
     def check_references(self):
         """Add reference list field if the model has references"""
@@ -82,12 +81,13 @@ class AdminModel:
                 setattr(self.instance, field.name, field.model_value)
             else:
                 self.error_list.append(field.error())
-        if len(self.error_list) > 0:
-            return False
-        return True
+        return len(self.error_list) == 0
     
     def errors(self):
-        return '<br>'.join(self.error_list)
+        try:
+            return '<br>'.join(self.error_list)
+        except AttributeError: 
+            return ''
     
     def save(self):
         return self.instance.put()
@@ -104,6 +104,7 @@ class AdminModel:
         s = [f.render() for f in self.fields]
         data = {
             'form': ''.join(s),
+            'errors': self.errors(),
             'id': self.id,
             'action': self.action()
         }

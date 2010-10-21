@@ -1,4 +1,5 @@
 import urllib
+import logging
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
@@ -47,6 +48,7 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = self.id()
+        logging.debug('ok')
         adminmodel = self.get_model(model, id=id, url=self.get_url())
         data = {
             'model': model,
@@ -59,14 +61,14 @@ class EditHandler(AdminHandler):
         adminmodel = self.get_model(model, id=id, data=self.request.POST, url=self.get_url())
         if adminmodel.validate():
             key = adminmodel.save()
-            self.redirect('/admin/list/%s' % model)
+            self.redirect('/admin/edit/%s/?id=' % (model, id))
         else:
             data = {
                 'model': model,
-                'errors': adminmodel.errors(),
                 'form': adminmodel.render_form()
             }
-            self.render('edit.html', data)
+            self.redirect('/admin/edit/%s/?id=%d' % (model, id))
+            # self.render('edit.html', data)
 
 
 class DeleteHandler(AdminHandler):

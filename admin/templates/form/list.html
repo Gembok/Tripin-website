@@ -1,0 +1,9 @@
+{{model}}
+
+<ul>
+{% for ref in refs %}
+	<li>
+		<a href="/admin/edit/{{model}}/?id={{ref.id}}">{{ ref }}</a> - <a href="/admin/delete/{{model}}/?id={{ref.id}}">Delete</a>
+	</li>
+{% endfor %}
+</ul>
