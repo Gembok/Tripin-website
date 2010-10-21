@@ -4,7 +4,7 @@ import utils
 import view
 
 class FormField:
-    def __init__(self, model, property, name, instance_value, post_value):
+    def __init__(self, model, property=None, name='', instance_value=None, post_value=None):
         self.model = model
         self.property = property
         self.name = name
@@ -118,14 +118,12 @@ class Reference(FormField):
 class ReferenceList(FormField):
     filename = 'list'
     
-    def get_items(self):
-        ref_model = getattr(self.model, self.name).item_type
-        items = ref_model.all().fetch(10)
-        items_dict = utils.to_dicts(items)
-        print items_dict
-        
+    def __init__(self, modelname, refs):
+        self.modelname = modelname
+        self.refs = utils.to_dicts(refs)
+    
     def render(self):
         return view.render_form(self.get_filename(), {
-            'items': self.get_items(),
-            'title': self.property.verbose_name
+            'refs': self.refs,
+            'model': self.modelname
         })

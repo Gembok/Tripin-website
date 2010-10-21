@@ -51,7 +51,7 @@ class AdminModel:
                 post_value = None
             form_field = self.get_field_type(field)
             self.fields.append(form_field(self.model, field, name, instance_value, post_value))
-    
+        self.check_references()
     
     def get_field_type(self, field):
         """Returns the form field type."""
@@ -63,6 +63,14 @@ class AdminModel:
     def check_blobstore(self, prop):
         if prop is blobstore.BlobReferenceProperty:
             self.blobstore = True
+    
+    def check_references(self):
+        for key, model in registered.iteritems():
+            collection = '%s_set' % model.__name__.lower()
+            try:
+                refs = getattr(self.instance, collection)
+                self.fields.append(form.ReferenceList(key, refs))
+            except AttributeError: pass
     
     def validate(self):
         """Validates all the fields according to field rules."""
@@ -104,12 +112,12 @@ class AdminModel:
 
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio', 'image', 'one', 'email', 'link', 'concert', 'refs']
+	show = ['name', 'bio', 'image', 'one', 'email', 'link']
 	edit = show
 
 class Concert(AdminModel):
     model = front.models.Concert
-    show = ['title']
+    show = ['title', 'member']
     edit = show
 
 registered = {'member': Member, 'concert': Concert}

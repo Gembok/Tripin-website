@@ -3,7 +3,7 @@
 	<select name="{{name}}">
 		<option value=""></option>
 	{% for opt in options %}
-		<option value="{{opt.key}}" {{opt.selected}}>{{opt.title}}</option>
+		<option value="{{opt.key}}" {{opt.selected}}>{% if opt.title %}{{opt.title}}{% else %}{{opt.name}}{% endif %}</option>
 	{% endfor %}
 	</select>
 </p>
