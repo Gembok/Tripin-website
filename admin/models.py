@@ -49,7 +49,7 @@ class AdminModel:
             except KeyError:
                 post_value = None
             form_field = self.get_field_type(field)
-            self.fields.append(form_field(field, name, instance_value, post_value))
+            self.fields.append(form_field(self.model, field, name, instance_value, post_value))
     
     
     def get_field_type(self, field):
@@ -103,7 +103,7 @@ class AdminModel:
 
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio', 'image', 'one', 'email', 'link']
+	show = ['name', 'bio', 'image', 'one', 'email', 'link', 'concert']
 	edit = show
 
 class Concert(AdminModel):

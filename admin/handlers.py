@@ -1,39 +1,16 @@
-import datetime
 import urllib
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
+import utils
 import front
 import models
 import view
 
 
 class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def to_dict(self, model):
-        data = {}
-        for key, value in model.properties().iteritems():
-            val = value.get_value_for_datastore(model)
-            if isinstance(val, datetime.datetime):
-                ms = time.mktime(val.utctimetuple()) * 1000
-                ms += getattr(val, 'microseconds', 0) / 1000
-                val = int(ms)
-            elif isinstance(val, db.Model):
-                val = self.to_dict(val)
-            data[key] = val
-            try:
-                data['id'] = model.key().id()
-            except:
-                pass
-        return data
-    
-    def to_dicts(self, models):
-        data = []
-        for model in models:
-            data.append(self.to_dict(model))
-        return data
-    
     def id(self):
         return int(self.request.get('id', 0))
     
@@ -58,7 +35,7 @@ class ListHandler(AdminHandler):
     def get(self, model):
         adminmodel = self.get_model(model)
         items = adminmodel.model.all().fetch(10)
-        dicts = self.to_dicts(items)
+        dicts = utils.to_dicts(items)
         data = {
             'model': model,
             'fields': [{'name': i} for i in adminmodel.show],

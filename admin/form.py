@@ -1,7 +1,11 @@
+from google.appengine.ext import db
+
+import utils
 import view
 
 class FormField:
-    def __init__(self, property, name, instance_value, post_value):
+    def __init__(self, model, property, name, instance_value, post_value):
+        self.model = model
         self.property = property
         self.name = name
         self.instance_value = instance_value
@@ -89,13 +93,20 @@ class File(FormField):
 class Reference(FormField):
     filename = 'select'
     
+    def parse_value(self):
+        return db.Key(self.post_value)
+    
     def get_options(self):
-        pass
+        ref_model = getattr(self.model, self.name).reference_class
+        items = ref_model.all().fetch(10)
+        items_dict = utils.to_dicts(items)
+        # for item in items_dict:
+        #     if item.key is self.instance_value
+        #         item.
     
     def render(self):
-        options = self.get_options()
-        return view.render(self.get_filename(), {
+        return view.render_form(self.get_filename(), {
             'name': self.name,
             'title': self.property.verbose_name,
-            'options': options
+            'options': self.get_options()
         })
