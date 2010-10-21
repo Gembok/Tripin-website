@@ -7,7 +7,7 @@ class Member(db.Model):
     # one = db.BooleanProperty('Bool', default=True)
     # email = db.EmailProperty('Email', required=True)
     # link = db.LinkProperty('Lien')
-    # concert = db.ReferenceProperty(Concert, 'Concert')
+    files = db.ListProperty(blobstore.BlobKey, 'Files')
 
 
 class Concert(db.Model):

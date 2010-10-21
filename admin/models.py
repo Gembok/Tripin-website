@@ -15,10 +15,9 @@ class AdminModel:
         (form.Date,             (db.DateProperty, db.DateTimeProperty, db.TimeProperty)),
         (form.Email,            db.EmailProperty),
         (form.Link,             db.LinkProperty),
-        (form.Select,           (db.ListProperty, db.StringListProperty)),
         (form.Reference,        db.ReferenceProperty),
-        (form.ReferenceList,    db.ListProperty),
         (form.File,             blobstore.BlobReferenceProperty),
+        (form.FileList,         db.ListProperty),
         (form.FormField,        db.Property)
     ]
     
@@ -65,6 +64,7 @@ class AdminModel:
             self.blobstore = True
     
     def check_references(self):
+        """Add reference list field if the model has references"""
         for key, model in registered.iteritems():
             collection = '%s_set' % model.__name__.lower()
             try:

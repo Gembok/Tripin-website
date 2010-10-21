@@ -70,10 +70,6 @@ class Checkbox(FormField):
         })
 
 
-class Select(FormField):
-    pass
-
-
 class Date(FormField):
     pass
 
@@ -114,6 +110,7 @@ class Reference(FormField):
             'title': self.property.verbose_name,
             'options': self.get_options()
         })
+
 
 class ReferenceList(FormField):
     filename = 'list'
