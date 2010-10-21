@@ -2,7 +2,7 @@
 	<label for="{{name}}">{{title}}</label>
 	<select name="{{name}}">
 	{% for opt in options %}
-		<option value="{{opt.value}}">
+		<option value="{{opt.value}}">{{opt.name}}</option>
 	{% endfor %}
 	</select>
 </p>

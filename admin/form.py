@@ -25,12 +25,12 @@ class FormField:
         return self.error_msg
     
     def value_for_form(self):
-        if self.instance_value is not None:
-            return self.instance_value
-        elif self.post_value is not None:
+        if self.post_value is not None:
             return self.post_value
+        elif self.instance_value is not None:
+            return self.instance_value
         else:
-            return self.property.default_value()
+            return self.property.default_value() or ''
     
     def get_filename(self):
         try:
@@ -85,3 +85,17 @@ class Email(FormField):
 class File(FormField):
     pass
 
+
+class Reference(FormField):
+    filename = 'select'
+    
+    def get_options(self):
+        pass
+    
+    def render(self):
+        options = self.get_options()
+        return view.render(self.get_filename(), {
+            'name': self.name,
+            'title': self.property.verbose_name,
+            'options': options
+        })

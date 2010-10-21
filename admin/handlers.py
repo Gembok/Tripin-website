@@ -85,6 +85,7 @@ class EditHandler(AdminHandler):
             self.redirect('/admin/list/%s' % model)
         else:
             data = {
+                'model': model,
                 'errors': adminmodel.errors(),
                 'form': adminmodel.render_form()
             }
