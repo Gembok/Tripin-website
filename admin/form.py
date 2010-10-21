@@ -94,19 +94,38 @@ class Reference(FormField):
     filename = 'select'
     
     def parse_value(self):
-        return db.Key(self.post_value)
+        return db.Key(self.post_value) if self.post_value else None
     
     def get_options(self):
         ref_model = getattr(self.model, self.name).reference_class
         items = ref_model.all().fetch(10)
         items_dict = utils.to_dicts(items)
-        # for item in items_dict:
-        #     if item.key is self.instance_value
-        #         item.
+        for item in items_dict:
+            self.check_if_selected(item)
+        return items_dict
+    
+    def check_if_selected(self, item):
+        if (self.instance_value) and (item['key'] == self.instance_value.key()):
+            item['selected'] = 'selected="selected"'
     
     def render(self):
         return view.render_form(self.get_filename(), {
             'name': self.name,
             'title': self.property.verbose_name,
             'options': self.get_options()
+        })
+
+class ReferenceList(FormField):
+    filename = 'list'
+    
+    def get_items(self):
+        ref_model = getattr(self.model, self.name).item_type
+        items = ref_model.all().fetch(10)
+        items_dict = utils.to_dicts(items)
+        print items_dict
+        
+    def render(self):
+        return view.render_form(self.get_filename(), {
+            'items': self.get_items(),
+            'title': self.property.verbose_name
         })

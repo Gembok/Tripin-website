@@ -9,16 +9,17 @@ class AdminModel:
     edit = []
     show = []
     mappings = [
-        (form.Input,        (db.StringProperty, db.IntegerProperty, db.FloatProperty)),
-        (form.Textarea,     db.TextProperty),
-        (form.Checkbox,     db.BooleanProperty),
-        (form.Date,         (db.DateProperty, db.DateTimeProperty, db.TimeProperty)),
-        (form.Email,        db.EmailProperty),
-        (form.Link,         db.LinkProperty),
-        (form.Select,       (db.ListProperty, db.StringListProperty)),
-        (form.Reference,    db.ReferenceProperty),
-        (form.File,         blobstore.BlobReferenceProperty),
-        (form.FormField,    db.Property)
+        (form.Input,            (db.StringProperty, db.IntegerProperty, db.FloatProperty)),
+        (form.Textarea,         db.TextProperty),
+        (form.Checkbox,         db.BooleanProperty),
+        (form.Date,             (db.DateProperty, db.DateTimeProperty, db.TimeProperty)),
+        (form.Email,            db.EmailProperty),
+        (form.Link,             db.LinkProperty),
+        (form.Select,           (db.ListProperty, db.StringListProperty)),
+        (form.Reference,        db.ReferenceProperty),
+        (form.ReferenceList,    db.ListProperty),
+        (form.File,             blobstore.BlobReferenceProperty),
+        (form.FormField,        db.Property)
     ]
     
     def __init__(self, data=None, id=None, url=None):
@@ -103,7 +104,7 @@ class AdminModel:
 
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio', 'image', 'one', 'email', 'link', 'concert']
+	show = ['name', 'bio', 'image', 'one', 'email', 'link', 'concert', 'refs']
 	edit = show
 
 class Concert(AdminModel):

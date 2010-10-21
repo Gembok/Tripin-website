@@ -15,9 +15,9 @@ def to_dict(model):
         data[key] = val
         try:
             data['id'] = model.key().id()
-            data['key'] = model.key()
-        except:
-            pass
+        except Exception, e:
+            print e
+        data['key'] = model.key()
     return data
 
 def to_dicts(models):
