@@ -22,11 +22,12 @@ class AdminModel:
         self.data = dict(data) if data else None
         self.upload_url = upload_url
         self.id = id
-        self.blobstore = []
+        self.blobstore = {}
         self.instance = None
         self.get_instance()
     
     def build_form(self):
+        self.get_editfields()
         self.make_fields()
         self.make_file_fields()
     
@@ -35,14 +36,18 @@ class AdminModel:
         if self.id and not self.instance:
             self.instance = self.model.get_by_id(self.id)
     
+    def get_editfields(self):
+        self.allfields = {}
+        base_fields = self.model.properties()
+        for name in self.edit:
+            try:
+                self.allfields[name] = base_fields[name]
+            except KeyError: pass
+    
     def make_fields(self):
         """Instantiates the form fields for the model's fields"""
         self.form_fields = []
-        self.base_fields = self.model.properties()
-        for name in self.edit:
-            if not self.base_fields.has_key(name):
-                continue
-            field = self.base_fields[name]
+        for name, field in self.allfields.iteritems():
             self.check_blobstore(name, field)
             instance_value = getattr(self.instance, name) if self.instance else None
             post_value = self.data[name] if (self.data and self.data.has_key(name)) else None
@@ -60,12 +65,13 @@ class AdminModel:
     
     def check_blobstore(self, name, field):
         if isinstance(field, blobstore.BlobReferenceProperty):
-            self.blobstore.append(name)
+            self.blobstore[name] = field
     
     def make_file_fields(self):
         self.file_fields = []
-        for name in self.blobstore:
-            self.file_fields.append(form.File(self.model, self.base_fields[name]))
+        for name, field in self.blobstore.iteritems():
+            blob = getattr(self.instance, name, None)
+            self.file_fields.append(form.File(self.model, property=field, name=name, key=blob.key()))
     
     def check_references(self):
         """Add reference list field if the model has references"""

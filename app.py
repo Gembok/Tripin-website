@@ -3,8 +3,10 @@ import cgi
 import config
 import sys
 sys.path.insert(0, config.EXT)
+import urllib
 
 from google.appengine.ext import webapp
+from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import util, blobstore_handlers
 
 import admin.handlers
@@ -31,8 +33,10 @@ class BaseHandler(webapp.RequestHandler):
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
-        blob_info = blobstore.BlobInfo.get(resource)
-        self.send_blob(blob_info)
+        if not blobstore.get(resource):
+            self.error(404)
+        else:
+            self.send_blob(resource)
 
 routes = [
     # (r'^/test', front.handlers.TestHandler),

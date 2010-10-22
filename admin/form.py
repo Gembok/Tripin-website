@@ -4,7 +4,7 @@ import utils
 import view
 
 class FormField:
-    def __init__(self, model, property=None, name='', instance_value=None, post_value=None):
+    def __init__(self, model, property=None, name='', instance_value=None, post_value=None, **kw):
         self.model = model
         self.property = property
         self.name = name
@@ -12,6 +12,8 @@ class FormField:
         self.post_value = post_value
         self.model_value = None
         self.error_msg = None
+        for key, val in kw.iteritems():
+            setattr(self, key, val)
     
     def validate(self):
         newval = self.parse_value()
@@ -123,7 +125,12 @@ class ReferenceList(FormField):
 
 
 class File(FormField):
-    pass
+    def render(self):
+        return view.render_form(self.get_filename(), {
+            'title': self.property.verbose_name,
+            'name': self.name,
+            'key': str(self.key) if hasattr(self, 'key') else ''
+        })
 
 
 class FileList(FormField):
