@@ -15,20 +15,20 @@ class AdminModel:
         (form.Date,             (db.DateProperty, db.DateTimeProperty, db.TimeProperty)),
         (form.Email,            db.EmailProperty),
         (form.Link,             db.LinkProperty),
-        (form.Reference,        db.ReferenceProperty),
-        (form.File,             blobstore.BlobReferenceProperty),
-        (form.FileList,         db.ListProperty),
-        (form.FormField,        db.Property)
+        (form.Reference,        db.ReferenceProperty)
     ]
     
-    def __init__(self, data=None, id=None, url=None):
+    def __init__(self, data=None, id=None, upload_url=None):
         self.data = dict(data) if data else None
-        self.url = url
+        self.upload_url = upload_url
         self.id = id
-        self.blobstore = False
+        self.blobstore = []
         self.instance = None
         self.get_instance()
+    
+    def build_form(self):
         self.make_fields()
+        self.make_file_fields()
     
     def get_instance(self):
         """If not new form, gets the instance for values."""
@@ -37,30 +37,35 @@ class AdminModel:
     
     def make_fields(self):
         """Instantiates the form fields for the model's fields"""
-        self.fields = []
-        base_fields = self.model.properties()
+        self.form_fields = []
+        self.base_fields = self.model.properties()
         for name in self.edit:
-            try:
-                field = base_fields[name]
-            except KeyError: continue
+            if not self.base_fields.has_key(name):
+                continue
+            field = self.base_fields[name]
+            self.check_blobstore(name, field)
             instance_value = getattr(self.instance, name) if self.instance else None
-            try:
-                post_value = self.data[name] if self.data else None
-            except KeyError:
-                post_value = None
+            post_value = self.data[name] if (self.data and self.data.has_key(name)) else None
             form_field = self.get_field_type(field)
-            self.fields.append(form_field(self.model, field, name, instance_value, post_value))
+            if form_field:
+                self.form_fields.append(form_field(self.model, field, name, instance_value, post_value))
         self.check_references()
     
     def get_field_type(self, field):
         """Returns the form field type."""
         for mapping in self.mappings:
             if isinstance(field, mapping[1]):
-                self.check_blobstore(mapping[1])
                 return mapping[0]
+        return None
     
-    def check_blobstore(self, prop):
-        self.blobstore = prop is blobstore.BlobReferenceProperty
+    def check_blobstore(self, name, field):
+        if isinstance(field, blobstore.BlobReferenceProperty):
+            self.blobstore.append(name)
+    
+    def make_file_fields(self):
+        self.file_fields = []
+        for name in self.blobstore:
+            self.file_fields.append(form.File(self.model, self.base_fields[name]))
     
     def check_references(self):
         """Add reference list field if the model has references"""
@@ -68,7 +73,7 @@ class AdminModel:
             collection = '%s_set' % model.__name__.lower()
             try:
                 refs = getattr(self.instance, collection)
-                self.fields.append(form.ReferenceList(key, refs))
+                self.form_fields.append(form.ReferenceList(key, refs))
             except AttributeError: pass
     
     def validate(self):
@@ -76,7 +81,7 @@ class AdminModel:
         self.error_list = []
         if not self.instance:
             self.instance = self.model()
-        for field in self.fields:
+        for field in self.form_fields:
             if field.validate():
                 setattr(self.instance, field.name, field.model_value)
             else:
@@ -97,24 +102,32 @@ class AdminModel:
     
     def action(self):
         """Returns blobstore upload url if model has blob."""
-        return blobstore.create_upload_url(self.url) if self.blobstore else ''
+        return blobstore.create_upload_url(self.upload_url) if self.blobstore else ''
     
     def render_form(self):
         """Renders the form with included fields rendered."""
-        s = [f.render() for f in self.fields]
-        data = {
-            'form': ''.join(s),
+        s = [f.render() for f in self.form_fields]
+        return view.render_form('form.html', {
+            'fields': ''.join(s),
             'errors': self.errors(),
+            'id': self.id
+        })
+    
+    def render_file_form(self):
+        if not self.file_fields: return ''
+        s = [f.render() for f in self.file_fields]
+        return view.render_form('files.html', {
+            'fields': ''.join(s),
             'id': self.id,
             'action': self.action()
-        }
-        return view.render_form('form.html', data)
+        })
 
-
+# User classes
 class Member(AdminModel):
 	model = front.models.Member
 	show = ['name', 'bio', 'image', 'one', 'email', 'link']
 	edit = show
+
 
 class Concert(AdminModel):
     model = front.models.Concert

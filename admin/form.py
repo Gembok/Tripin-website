@@ -82,14 +82,6 @@ class Email(FormField):
     filename = 'input'
 
 
-class File(FormField):
-    pass
-
-
-class FileList(FormField):
-    pass
-
-
 class Reference(FormField):
     filename = 'select'
     
@@ -128,3 +120,11 @@ class ReferenceList(FormField):
             'refs': self.refs,
             'model': self.modelname
         })
+
+
+class File(FormField):
+    pass
+
+
+class FileList(FormField):
+    pass
