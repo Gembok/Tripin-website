@@ -77,7 +77,12 @@ class UploadHandler(AdminHandler):
     def post(self, model):
         id = self.id()
         adminmodel = self.get_model(model, id=id)
-        adminmodel.save_blobkeys(self.get_uploads())
+        adminmodel.build_form()
+        for name in adminmodel.blobstore:
+            upload = self.get_uploads(name)
+            if upload:
+                setattr(adminmodel.instance, name, upload[0])
+        adminmodel.save()
         self.redirect('/admin/edit/%s?id=%d' % (model, id))
 
 
