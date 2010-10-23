@@ -1,0 +1,9 @@
+{{title}}
+
+{% for field in fields %}
+	<input type="file" name="{{name}}"><br />
+{% endfor %}
+<br />
+{% for key in keys %}
+	<a href="/serve/{{key}}">{{key}}</a> - delete <br />
+{% endfor %}

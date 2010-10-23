@@ -48,42 +48,44 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = self.id()
-        adminmodel = self.get_model(model, id=id, upload_url=self.upload_url(model))
-        adminmodel.build_form()
-        data = {
+        adminmodel = self.get_model(model, id=id)
+        adminmodel.make_form(upload_url = self.upload_url(model))
+        forms = adminmodel.render()
+        self.render('edit.html', data = {
             'model': model,
-            'form': adminmodel.render_form(),
-            'files': adminmodel.render_file_form()
-        }
-        self.render('edit.html', data)
+            'form': forms['form'],
+            'files': forms['files']
+        })
     
     def post(self, model):
         id = self.id()
-        adminmodel = self.get_model(model, id=id, data=self.request.POST, upload_url=self.upload_url(model))
-        adminmodel.build_form()
-        if adminmodel.validate():
-            key = adminmodel.save()
+        adminmodel = self.get_model(model, id=id)
+        adminmodel.make_form(post_data=self.request.POST, upload_url=self.upload_url(model))
+        if adminmodel.save():
             self.redirect('/admin/edit/%s/?id=%d' % (model, id))
         else:
-            data = {
+            forms = adminmodel.render()
+            self.render('edit.html', {
                 'model': model,
-                'form': adminmodel.render_form(),
-                'files': adminmodel.render_file_form()
-            }
-            self.render('edit.html', data)
+                'form': forms['form'],
+                'files': forms['files']
+            })
 
 
 class UploadHandler(AdminHandler):
     def post(self, model):
         id = self.id()
         adminmodel = self.get_model(model, id=id)
-        adminmodel.build_form()
-        for name in adminmodel.blobstore.iterkeys():
+        adminmodel.make_form()
+        for name in adminmodel.edit:
             upload = self.get_uploads(name)
             if upload:
-                try:
-                    setattr(adminmodel.instance, name, upload[0].key())
-                except IndexError: pass
+                attr = getattr(adminmodel.instance, name)
+                if isinstance(attr, list):
+                    for up in upload:
+                        attr.append(up.key())
+                else:
+                    attr = upload[0].key()
         adminmodel.save()
         self.redirect('/admin/edit/%s?id=%d' % (model, id))
 
