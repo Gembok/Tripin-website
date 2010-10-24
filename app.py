@@ -45,6 +45,7 @@ routes = [
     (r'^/admin/edit/(\w+)/?$', admin.handlers.EditHandler),
     (r'^/admin/delete/(\w+)/?$', admin.handlers.DeleteHandler),
     (r'^/admin/upload/(\w+)/?$', admin.handlers.UploadHandler),
+    (r'^/admin/deleteblob/(\w+)/?$', admin.handlers.DeleteBlobHandler),
     (r'^/serve/([^/]+)?', ServeHandler)
     # (r'^/(.*)/?$', front.handlers.MainHandler),
 ]

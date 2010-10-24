@@ -5,5 +5,5 @@
 {% endfor %}
 <br />
 {% for key in keys %}
-	<a href="/serve/{{key}}">{{key}}</a> - delete <br />
+	<a href="/serve/{{key}}">{{key}}</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{key}}">delete</a> <br />
 {% endfor %}

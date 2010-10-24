@@ -19,7 +19,7 @@ class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
         return '/admin/upload/%s/?%s' % (model, self.request.query_string)
     
     def get_model(self, model, **kw):
-        return models.registered.get(model, models.AdminModel)(**kw)  #TODO:check if model exists
+        return models.registered.get(model, models.AdminModel)(name=model, **kw)  #TODO:check if model exists
     
     def render(self, filename, data):
         view.render_page(self, filename, data)
@@ -61,8 +61,9 @@ class EditHandler(AdminHandler):
         id = self.id()
         adminmodel = self.get_model(model, id=id)
         adminmodel.make_form(post_data=self.request.POST, upload_url=self.upload_url(model))
-        if adminmodel.save():
-            self.redirect('/admin/edit/%s/?id=%d' % (model, id))
+        id_saved = adminmodel.save()
+        if id_saved:
+            self.redirect('/admin/edit/%s/?id=%d' % (model, id_saved.id()))
         else:
             forms = adminmodel.render()
             self.render('edit.html', {
@@ -77,16 +78,17 @@ class UploadHandler(AdminHandler):
         id = self.id()
         adminmodel = self.get_model(model, id=id)
         adminmodel.make_form()
-        for name in adminmodel.edit:
-            upload = self.get_uploads(name)
-            if upload:
-                attr = getattr(adminmodel.instance, name)
-                if isinstance(attr, list):
-                    for up in upload:
-                        attr.append(up.key())
-                else:
-                    attr = upload[0].key()
-        adminmodel.save()
+        adminmodel.upload(self)
+        self.redirect('/admin/edit/%s?id=%d' % (model, id))
+
+
+class DeleteBlobHandler(AdminHandler):
+    def get(self, model):
+        id = self.id()
+        key = self.request.get('key', None)
+        adminmodel = self.get_model(model, id=id)
+        adminmodel.make_form()
+        adminmodel.delete_blob(key)
         self.redirect('/admin/edit/%s?id=%d' % (model, id))
 
 

@@ -52,6 +52,12 @@ class Form:
     def add_ref(self, modelname, refs):
         self.refs.append(ReferenceList(modelname, refs))
     
+    def upload(self, handler):
+        for f in self.files:
+            f.upload(handler)
+            self.model.set(f.name, f.model_value)
+        return True
+    
     def validate(self):
         """Validates all the fields according to field rules."""
         for field in self.fields:
@@ -60,6 +66,11 @@ class Form:
             else:
                 self.errors.append(field.error())
         return len(self.errors) == 0
+    
+    def delete_blob(self, key):
+        for f in self.files:
+            f.delete(key)
+            self.model.set(f.name, f.instance_value)
     
     def get_errors(self):
         return '<br>'.join(self.errors)
@@ -106,13 +117,16 @@ class FormField:
         newval = self.parse_value()
         try:
             self.model_value = self.property.validate(newval)
-            return True
         except Exception, e:
             self.error_msg = '%s has error: %s' % (self.name, e)
             return False
+        return True
     
     def parse_value(self):
-        return self.post_value
+        return self.post_value if self.post_value else self.instance_value
+    
+    def file_value(self, handler=None):
+        return self.instance_value
     
     def error(self):
         return self.error_msg
@@ -216,6 +230,14 @@ class FileField(FormField):
     pass
 
 class File(FileField):
+    def upload(self, handler):
+        up = handler.get_uploads(self.name)
+        self.model_value = up[0].key()
+    
+    def delete(self, key):
+        if self.instance_value.key() == blobstore.BlobKey(key):
+            self.instance_value = None
+    
     def render(self):
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
@@ -225,14 +247,25 @@ class File(FileField):
 
 
 class FileList(FileField):
+    def upload(self, handler):
+        ups = handler.get_uploads(self.name)
+        self.model_value = self.instance_value + [up.key() for up in ups]
+    
+    def delete(self, key):
+        for i in range(0, len(self.instance_value)):
+            if str(self.instance_value[i]) == blobstore.BlobKey(key):
+                del self.instance_value[i]
+                return
+    
     def get_files(self):
-        files = getattr(self.model.get_by_id(), self.name)
-        return [str(f) for f in files]
+        return [str(f) for f in self.instance_value]
     
     def render(self):
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'name': self.name,
+            'model': self.model.name,
+            'id': self.model.id,
             'fields': range(1,10),
             'keys': self.get_files()
         })

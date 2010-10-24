@@ -5,7 +5,9 @@ class FileListProperty(db.ListProperty):
     pass
 
 class BlobListProperty(db.ListProperty):
-    pass
+    def __init__(self, m_size):
+        self.m_size = m_size
+        super(BlobListProperty, self).__init__(db.Blob)
 
 
 # Model classes
@@ -16,7 +18,7 @@ class Member(db.Model):
     # one = db.BooleanProperty('Bool', default=True)
     # email = db.EmailProperty('Email', required=False)
     # link = db.LinkProperty('Lien')
-    files_blob = BlobListProperty(db.Blob)
+    # files_blob = BlobListProperty((100, 100))
     files = FileListProperty(blobstore.BlobKey, 'Files')
 
 

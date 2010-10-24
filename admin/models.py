@@ -7,8 +7,9 @@ class AdminModel:
     edit = []
     show = []
     
-    def __init__(self, id=None):
+    def __init__(self, id=None, name=''):
         self.id = id
+        self.name = name
         self.instance = None
         self.get_instance()
     
@@ -40,13 +41,17 @@ class AdminModel:
             try:
                 refs = getattr(self.instance, collection)
                 self.form.add_ref(key, refs)
-            except AttributeError: pass
+            except Exception: pass
+    
+    def get(self, name):
+        return getattr(self.instance, name, None)
     
     def set(self, name, value):
         setattr(self.instance, name, value)
     
-    def get_by_id(self):
-        return self.model.get_by_id(self.id)
+    def upload(self, handler):
+        self.form.upload(handler)
+        self.save()
     
     def save(self):
         if self.form.validate():
@@ -56,6 +61,10 @@ class AdminModel:
     
     def delete(self):
         return self.instance.delete()
+    
+    def delete_blob(self, key):
+        self.form.delete_blob(key)
+        self.save()
     
     def render(self):
         return {
