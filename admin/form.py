@@ -1,5 +1,6 @@
 from google.appengine.ext import db, blobstore
 
+import front.models
 import utils
 import view
 
@@ -23,7 +24,7 @@ class Form:
             (Link,          db.LinkProperty),
             (Reference,     db.ReferenceProperty),
             (File,          blobstore.BlobReferenceProperty),
-            (FileList,      db.ListProperty)
+            (FileList,      front.models.FileListProperty)
         ]
     
     def make_fields(self):

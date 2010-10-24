@@ -1,5 +1,14 @@
 from google.appengine.ext import db, blobstore
 
+# Custom property classes
+class FileListProperty(db.ListProperty):
+    pass
+
+class BlobListProperty(db.ListProperty):
+    pass
+
+
+# Model classes
 class Member(db.Model):
     name = db.StringProperty('Nom', required=False)
     bio = db.TextProperty('Biographie', required=False)
@@ -7,7 +16,8 @@ class Member(db.Model):
     # one = db.BooleanProperty('Bool', default=True)
     # email = db.EmailProperty('Email', required=False)
     # link = db.LinkProperty('Lien')
-    files = db.ListProperty(blobstore.BlobKey, 'Files')
+    files_blob = BlobListProperty(db.Blob)
+    files = FileListProperty(blobstore.BlobKey, 'Files')
 
 
 class Concert(db.Model):
