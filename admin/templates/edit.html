@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div><a href="/admin/list/{{model}}">List</a></div>
+	<div>
+		{% if parent_id %}
+			<a href="/admin/edit/{{parent}}/?id={{parent_id}}">Return</a></div>
+		{% else %}
+			<a href="/admin/list/{{model}}">List</a></div>
+		{% endif %}
 	
 	{{ form }}
 	

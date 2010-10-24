@@ -44,7 +44,15 @@ class AdminModel:
             except Exception: pass
     
     def get(self, name):
-        return getattr(self.instance, name, None)
+        try:
+            return getattr(self.instance, name, None)
+        except:
+            return None
+    
+    def get_blob_property(self, name):
+        prop_name = '%s_blob' % name
+        prop = getattr(self.model, prop_name, None)
+        return (prop, prop_name)
     
     def set(self, name, value):
         setattr(self.instance, name, value)
@@ -75,8 +83,8 @@ class AdminModel:
 # User classes
 class Member(AdminModel):
 	model = front.models.Member
-	show = ['name', 'bio', 'image', 'one', 'email', 'link', 'files']
-	edit = show
+	edit = ['name', 'bio', 'image', 'one', 'email', 'link', 'files']
+	show = ['name', 'bio']
 
 
 class Concert(AdminModel):

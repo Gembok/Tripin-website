@@ -1,4 +1,5 @@
 from google.appengine.ext import db, blobstore
+from google.appengine.api import images
 
 import front.models
 import utils
@@ -24,16 +25,16 @@ class Form:
             (Link,          db.LinkProperty),
             (Reference,     db.ReferenceProperty),
             (File,          blobstore.BlobReferenceProperty),
-            (FileList,      front.models.FileListProperty)
+            (FileList,      front.models.BlobReferenceListProperty)
         ]
     
     def make_fields(self):
         """Instantiates the form fields for the model's fields"""
         for name, prop in self.edit:
-            instance_value = getattr(self.model.instance, name, None)
+            instance_value = self.model.get(name)
             post_value = self.data[name] if (self.data and self.data.has_key(name)) else None
             form_field_class = self.get_field_type(prop)
-            form_field = form_field_class(self.model, prop, name, instance_value, post_value)
+            form_field = form_field_class(model=self.model, property=prop, name=name, instance_value=instance_value, post_value=post_value)
             self.add(form_field)
     
     def add(self, form_field):
@@ -50,7 +51,7 @@ class Form:
         return None
     
     def add_ref(self, modelname, refs):
-        self.refs.append(ReferenceList(modelname, refs))
+        self.refs.append(ReferenceList(self.model, modelname, refs))
     
     def upload(self, handler):
         for f in self.files:
@@ -102,7 +103,7 @@ class Form:
 
 # Individual field
 class FormField:
-    def __init__(self, model, property=None, name='', instance_value=None, post_value=None, **kw):
+    def __init__(self, model=None, property=None, name='', instance_value=None, post_value=None, **kw):
         self.model = model
         self.property = property
         self.name = name
@@ -123,7 +124,7 @@ class FormField:
         return True
     
     def parse_value(self):
-        return self.post_value if self.post_value else self.instance_value
+        return self.post_value if (self.post_value == '') else self.instance_value
     
     def file_value(self, handler=None):
         return self.instance_value
@@ -215,17 +216,21 @@ class Reference(FormField):
 class ReferenceList(FormField):
     filename = 'list'
     
-    def __init__(self, modelname, refs):
+    def __init__(self, model, modelname, refs):
+        self.model = model
         self.modelname = modelname
         self.refs = utils.to_dicts(refs)
     
     def render(self):
         return view.render_form(self.get_filename(), {
+            'parent': self.model.name,
+            'parent_id': self.model.id,
             'refs': self.refs,
             'model': self.modelname
         })
 
 
+# Special properties for file fields
 class FileField(FormField):
     pass
 
@@ -239,10 +244,14 @@ class File(FileField):
             self.instance_value = None
     
     def render(self):
+        key = self.instance_value.key() if self.instance_value else ''
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
+            'id': self.model.id,
+            'model': self.model.name,
             'name': self.name,
-            'key': str(self.instance_value.key() if self.instance_value else '')
+            # 'url': images.get_serving_url(key),
+            'key': str(key)
         })
 
 
@@ -250,13 +259,13 @@ class FileList(FileField):
     def upload(self, handler):
         ups = handler.get_uploads(self.name)
         self.model_value = self.instance_value + [up.key() for up in ups]
-    
+            
     def delete(self, key):
         for i in range(0, len(self.instance_value)):
             if str(self.instance_value[i]) == blobstore.BlobKey(key):
                 del self.instance_value[i]
                 return
-    
+        
     def get_files(self):
         return [str(f) for f in self.instance_value]
     

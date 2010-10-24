@@ -1,5 +1,7 @@
 <p>
 	<label for="{{name}}">{{title}}</label>
 	<input type="file" name="{{name}}"><br />
-	<a href="/serve/{{key}}">{{key}}</a>
+	{% if key %}
+		<a href="/serve/{{key}}">{{key}}</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{key}}">delete</a>
+	{% endif %}
 </p>

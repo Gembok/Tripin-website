@@ -3,31 +3,30 @@
 {% block content %}
 	<div><a href="/admin/">Models</a></div>
 
-<!-- <table>
+<table>
 	<thead>
 		<tr>
 			{% for f in fields %}
 				<td>{{f.name}}</td>
 			{% endfor %}
+				<td colspan="2">
+					<a href="/admin/edit/{{model}}">Add</a>
+				</td>
 		</tr>
 	</thead>
 	<tbody>
 	{% for item in items %}
 		<tr>
+			{% for field in item %}
 			<td>
-				{{ item }}
+				{{ field }}
 			</td>
+			{% endfor %}
+			<td><a href="/admin/edit/{{ model }}/?id={{item.id}}">Edit</a></td>
+			<td><a href="/admin/delete/{{model}}/?id={{item.id}}">Delete</a></td>
 		</tr>
 	{% endfor %}
 	</tbody>
-</table> -->
-
-<ul>
-{% for item in items %}
-	<li><a href="/admin/edit/{{ model }}/?id={{item.id}}">{{ item }}</a> - <a href="/admin/delete/{{model}}/?id={{item.id}}">Delete</a></li>
-{% endfor %}
-</ul>
-
-<a href="/admin/edit/{{ model }}">Add</a>
+</table>
 
 {% endblock %}

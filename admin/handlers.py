@@ -10,6 +10,7 @@ import front
 import models
 import view
 
+webapp.template.register_template_library('django_hack')
 
 class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
     def id(self):
@@ -36,11 +37,10 @@ class ListHandler(AdminHandler):
     def get(self, model):
         adminmodel = self.get_model(model)
         items = adminmodel.model.all().fetch(10)
-        dicts = utils.to_dicts(items)
         data = {
             'model': model,
             'fields': [{'name': i} for i in adminmodel.show],
-            'items': dicts
+            'items': utils.to_dicts_list(items, adminmodel.show)
         }
         self.render('list.html', data)
 
@@ -48,11 +48,15 @@ class ListHandler(AdminHandler):
 class EditHandler(AdminHandler):
     def get(self, model):
         id = self.id()
+        parent = self.request.get('parent', '')
+        parent_id = self.request.get('parent_id', '')
         adminmodel = self.get_model(model, id=id)
         adminmodel.make_form(upload_url = self.upload_url(model))
         forms = adminmodel.render()
         self.render('edit.html', data = {
             'model': model,
+            'parent': parent,
+            'parent_id': parent_id,
             'form': forms['form'],
             'files': forms['files']
         })
@@ -65,9 +69,13 @@ class EditHandler(AdminHandler):
         if id_saved:
             self.redirect('/admin/edit/%s/?id=%d' % (model, id_saved.id()))
         else:
+            parent_id = self.request.get('parent_id', '')
+            parent = self.request.get('parent', '')
             forms = adminmodel.render()
             self.render('edit.html', {
                 'model': model,
+                'parent': parent,
+                'parent_id': parent_id,
                 'form': forms['form'],
                 'files': forms['files']
             })

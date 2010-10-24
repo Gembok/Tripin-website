@@ -25,3 +25,14 @@ def to_dicts(models):
     for model in models:
         data.append(to_dict(model))
     return data
+
+
+def to_dicts_list(models, keys):
+    data = []
+    dicts = to_dicts(models)
+    for d in dicts:
+        it = []
+        for key in keys:
+            it.append(d[key])
+        data.append(it)
+    return data
