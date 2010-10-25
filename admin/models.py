@@ -115,12 +115,12 @@ class Article(AdminModel):
 
 class Agenda(AdminModel):
     model = front.models.Agenda
-    edit = ['title', 'date', 'place']
-    show = edit
+    edit = ['title', 'date', 'place', 'link']
+    show = ['title', 'place']
 
 class Contact(AdminModel):
     model = front.models.Contact
-    edit = ['title', 'name', 'tel', 'email', 'address']
+    edit = ['title', 'name', 'phone', 'email', 'address']
     show = ['name']
 
 class Lien(AdminModel):

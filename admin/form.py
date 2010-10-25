@@ -168,7 +168,7 @@ class Input(FormField):
         elif isinstance(self.property, db.FloatProperty):
             return float(self.post_value)
         else:
-            return str(self.post_value)
+            return self.post_value
 
 
 class Textarea(FormField):
@@ -192,7 +192,7 @@ class Date(FormField):
         if isinstance(self.post_value, datetime.datetime):
             return self.post_value
         else:
-            format = '%Y-%m-%d %H:%i:%s'
+            format = '%Y-%m-%d %H:%M:%S'
             try:
                 return datetime.datetime.strptime(self.post_value, format)
             except ValueError:

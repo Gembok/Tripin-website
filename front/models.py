@@ -24,6 +24,7 @@ class Agenda(db.Model):
     title = db.StringProperty('Titre')
     date = db.DateTimeProperty('Date et heure')
     place = db.StringProperty('Lieu')
+    link = db.LinkProperty('Lien')
 
 class Photo(db.Model):
     title = db.StringProperty('Titre')
@@ -42,7 +43,7 @@ class Article(db.Model):
 class Contact(db.Model):
     title = db.StringProperty('Titre')
     name = db.StringProperty('Nom')
-    tel = db.StringProperty('Telephone')
+    phone = db.StringProperty('Telephone')
     email = db.EmailProperty('Email')
     address = db.TextProperty('Adresse')
 

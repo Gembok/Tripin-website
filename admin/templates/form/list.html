@@ -1,5 +1,6 @@
-{{model}}
+<span class="label">{{model}}</span>
 
+{% if refs %}
 <ul>
 {% for ref in refs %}
 	<li>
@@ -7,3 +8,6 @@
 	</li>
 {% endfor %}
 </ul>
+{% else %}
+	Pas de {{model}}
+{% endif %}

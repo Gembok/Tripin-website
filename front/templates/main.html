@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Trip in</title>
+	
+	<link rel="stylesheet" href="/static/front/css/main.css" type="text/css" media="all" charset="utf-8">
+</head>
+<body>
+	<div id="content">
+		<div id="title"></div>
+		
+		<ul id="menu">
+			<li><a href="#">Biographie</a></li>
+			<li><a href="#">Musique</a></li>
+			<li><a href="#">Textes</a></li>
+			<li><a href="#">Guestbook</a></li>
+		</ul>
+		
+		{{#contacts}}
+		<ul id="contact">
+			<li>
+				<h2>{{title}}</h2>
+				<h3>{{name}}</h3>
+				<span class="phone">{{phone}}</span><br />
+				<a href="mailto:{{email}}">{{email}}</a>
+			</li>			
+		</ul>
+		{{/contacts}}
+	</div>
+	
+	<div id="musique" class="aside">
+		<h1>Musique</h1>
+	</div>
+	
+	<ul id="agenda" class="aside">
+		<h1>Agenda</h1>
+		
+		{{#agenda}}
+		<li>
+			<address>{{place}}</address>
+			<span class="date">{{date}}</span>
+		</li>
+		{{/agenda}}
+	</ul>
+	
+	<div id="back-left" class="background"></div>
+	<div id="back-right" class="background"></div>
+</body>

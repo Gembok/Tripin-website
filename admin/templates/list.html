@@ -5,10 +5,10 @@
 	<thead>
 		<tr>
 			{% for f in fields %}
-				<td>{{f.name}}</td>
+				<td>{{f.namea}}</td>
 			{% endfor %}
 				<td colspan="2">
-					<a href="/admin/edit/{{model}}">Add</a>
+					<a href="/admin/edit/{{model}}">Ajouter</a>
 				</td>
 		</tr>
 	</thead>
@@ -20,8 +20,8 @@
 				{{ field }}
 			</td>
 			{% endfor %}
-			<td><a href="/admin/edit/{{model}}/?id={{item.id}}">Edit</a></td>
-			<td><a href="/admin/delete/{{model}}/?id={{item.id}}">Delete</a></td>
+			<td><a href="/admin/edit/{{model}}/?id={{item.id}}">Editer</a></td>
+			<td><a href="/admin/delete/{{model}}/?id={{item.id}}">Supprimer</a></td>
 		</tr>
 	{% endfor %}
 	</tbody>
