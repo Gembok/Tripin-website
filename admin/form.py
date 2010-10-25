@@ -1,3 +1,5 @@
+import datetime
+
 from google.appengine.ext import db, blobstore
 from google.appengine.api import images
 
@@ -32,7 +34,7 @@ class Form:
         """Instantiates the form fields for the model's fields"""
         for name, prop in self.edit:
             instance_value = self.model.get(name)
-            post_value = self.data[name] if (self.data and self.data.has_key(name)) else None
+            post_value = self.data[name] if (self.data and self.data.has_key(name)) else instance_value
             form_field_class = self.get_field_type(prop)
             form_field = form_field_class(model=self.model, property=prop, name=name, instance_value=instance_value, post_value=post_value)
             self.add(form_field)
@@ -67,6 +69,10 @@ class Form:
             else:
                 self.errors.append(field.error())
         return len(self.errors) == 0
+    
+    def delete_blobs(self):
+        for f in self.files:
+            f.delete()
     
     def delete_blob(self, key):
         for f in self.files:
@@ -118,13 +124,13 @@ class FormField:
         newval = self.parse_value()
         try:
             self.model_value = self.property.validate(newval)
+            return True
         except Exception, e:
             self.error_msg = '%s has error: %s' % (self.name, e)
             return False
-        return True
     
     def parse_value(self):
-        return self.post_value if (self.post_value == '') else self.instance_value
+        return self.post_value
     
     def file_value(self, handler=None):
         return self.instance_value
@@ -156,7 +162,13 @@ class FormField:
 
 # Custom form fields
 class Input(FormField):
-    pass
+    def parse_value(self):
+        if isinstance(self.property, db.IntegerProperty):
+            return int(self.post_value)
+        elif isinstance(self.property, db.FloatProperty):
+            return float(self.post_value)
+        else:
+            return str(self.post_value)
 
 
 class Textarea(FormField):
@@ -176,7 +188,16 @@ class Checkbox(FormField):
 
 
 class Date(FormField):
-    pass
+    def parse_value(self):
+        if isinstance(self.post_value, datetime.datetime):
+            return self.post_value
+        else:
+            format = '%Y-%m-%d %H:%i:%s'
+            try:
+                return datetime.datetime.strptime(self.post_value, format)
+            except ValueError:
+                format = '%Y-%m-%d'
+                return datetime.datetime.strptime(self.post_value, format)
 
 
 class Link(FormField):
@@ -237,10 +258,17 @@ class FileField(FormField):
 class File(FileField):
     def upload(self, handler):
         up = handler.get_uploads(self.name)
-        self.model_value = up[0].key()
+        if up:
+            self.model_value = up[0].key()
+            if self.instance_value:
+                blobstore.delete(self.instance_value.key())
+        else:
+            self.model_value = self.instance_value
     
-    def delete(self, key):
-        if self.instance_value.key() == blobstore.BlobKey(key):
+    def delete(self, key=None):
+        if not self.instance_value: return
+        if (not key) or (self.instance_value.key() == blobstore.BlobKey(key)):
+            blobstore.delete(self.instance_value.key())
             self.instance_value = None
     
     def render(self):
@@ -260,9 +288,13 @@ class FileList(FileField):
         ups = handler.get_uploads(self.name)
         self.model_value = self.instance_value + [up.key() for up in ups]
             
-    def delete(self, key):
+    def delete(self, key=None):
+        if not self.instance_value: return
         for i in range(0, len(self.instance_value)):
-            if str(self.instance_value[i]) == blobstore.BlobKey(key):
+            if not key:
+                blobstore.delete(str(self.instance_value[i]))
+            elif str(self.instance_value[i]) == blobstore.BlobKey(key):
+                blobstore.delete(key)
                 del self.instance_value[i]
                 return
         

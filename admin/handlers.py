@@ -10,11 +10,11 @@ import front
 import models
 import view
 
-webapp.template.register_template_library('django_hack')
+DEFAULT = 'biographie'
 
 class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
     def id(self):
-        return int(self.request.get('id', 0))
+        return int(self.request.get('id', 0) or 0)
     
     def upload_url(self, model):
         return '/admin/upload/%s/?%s' % (model, self.request.query_string)
@@ -22,27 +22,27 @@ class AdminHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get_model(self, model, **kw):
         return models.registered.get(model, models.AdminModel)(name=model, **kw)  #TODO:check if model exists
     
-    def render(self, filename, data):
+    def get_model_list(self):
+        return models.registered.keys()
+    
+    def render(self, filename, data, model):
+        data.update({
+            'model': model,
+            'menu': self.get_model_list()
+        })
         view.render_page(self, filename, data)
 
 
-class ModelsHandler(AdminHandler):
-    def get(self):
-        names = [{'name': k} for k, v in models.registered.iteritems()]
-        data = {'models': names}
-        self.render('models.html', data)
-
-
 class ListHandler(AdminHandler):
-    def get(self, model):
+    def get(self, model=None):
+        if not model:
+            model = DEFAULT
         adminmodel = self.get_model(model)
         items = adminmodel.model.all().fetch(10)
-        data = {
-            'model': model,
+        self.render('list.html', {
             'fields': [{'name': i} for i in adminmodel.show],
             'items': utils.to_dicts_list(items, adminmodel.show)
-        }
-        self.render('list.html', data)
+        }, model)
 
 
 class EditHandler(AdminHandler):
@@ -53,13 +53,12 @@ class EditHandler(AdminHandler):
         adminmodel = self.get_model(model, id=id)
         adminmodel.make_form(upload_url = self.upload_url(model))
         forms = adminmodel.render()
-        self.render('edit.html', data = {
-            'model': model,
+        self.render('edit.html', {
             'parent': parent,
             'parent_id': parent_id,
             'form': forms['form'],
             'files': forms['files']
-        })
+        }, model)
     
     def post(self, model):
         id = self.id()
@@ -73,12 +72,11 @@ class EditHandler(AdminHandler):
             parent = self.request.get('parent', '')
             forms = adminmodel.render()
             self.render('edit.html', {
-                'model': model,
                 'parent': parent,
                 'parent_id': parent_id,
                 'form': forms['form'],
                 'files': forms['files']
-            })
+            }, model)
 
 
 class UploadHandler(AdminHandler):
@@ -108,5 +106,15 @@ class DeleteHandler(AdminHandler):
             self.response.out.write('<a href="?id=%d&confirm=1">Confirm</a> - <a href="/admin/list/%s">Cancel</a>' % (id, model))
         else:
             admin_model = self.get_model(model, id=id)
+            admin_model.make_form()
             admin_model.delete()
             self.redirect('/admin/list/%s' % model)
+
+routes = [
+    (r'^/admin/edit/(\w+)/?$', EditHandler),
+    (r'^/admin/delete/(\w+)/?$', DeleteHandler),
+    (r'^/admin/upload/(\w+)/?$', UploadHandler),
+    (r'^/admin/deleteblob/(\w+)/?$', DeleteBlobHandler),
+    (r'^/admin/list/(\w+)/?$', ListHandler),
+    (r'^/admin/?', ListHandler)
+]

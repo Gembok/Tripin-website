@@ -1,6 +1,6 @@
-import form
 import front.models
-import view
+import adminmodel
+import form
 
 class AdminModel:
     model = None
@@ -68,6 +68,7 @@ class AdminModel:
             return False
     
     def delete(self):
+        self.form.delete_blobs()
         return self.instance.delete()
     
     def delete_blob(self, key):
@@ -80,16 +81,73 @@ class AdminModel:
             'files':self.form.render_files()
         }
 
+
 # User classes
-class Member(AdminModel):
-	model = front.models.Member
-	edit = ['name', 'bio', 'image', 'one', 'email', 'link', 'files']
-	show = ['name', 'bio']
+class Biography(AdminModel):
+    model = front.models.Biography
+    edit = ['text']
+    show = ['text']
 
+class Album(AdminModel):
+    model = front.models.Album
+    edit = ['title', 'date']
+    show = ['title']
 
-class Concert(AdminModel):
-    model = front.models.Concert
-    show = ['title', 'member']
-    edit = show
+class Song(AdminModel):
+    model = front.models.Song
+    edit = ['title', 'track', 'mp3', 'lyrics', 'album']
+    show = ['title', 'track']
 
-registered = {'member': Member, 'concert': Concert}
+class Photo(AdminModel):
+    model = front.models.Photo
+    edit = ['title', 'concert', 'credits', 'photos']
+    show = ['title']
+
+class Video(AdminModel):
+    model = front.models.Video
+    edit = ['title', 'content']
+    show = ['title']
+
+class Article(AdminModel):
+    model = front.models.Article
+    edit = ['titre', 'text']
+    show = ['text']
+
+class Agenda(AdminModel):
+    model = front.models.Agenda
+    edit = ['title', 'date', 'place']
+    show = edit
+
+class Contact(AdminModel):
+    model = front.models.Contact
+    edit = ['title', 'name', 'tel', 'email', 'address']
+    show = ['name']
+
+class Lien(AdminModel):
+    model = front.models.Lien
+    edit = ['title', 'link']
+    show = edit
+
+class Guestbook(AdminModel):
+    model = front.models.Guestbook
+    edit = ['name', 'text']
+    show = ['name']
+
+class Newsletter(AdminModel):
+    model = front.models.Newsletter
+    edit = ['email']
+    show = ['email']
+
+registered = {
+    'biographie': Biography,
+    'albums': Album,
+    'songs': Song,
+    'photos': Photo,
+    'videos': Video,
+    'articles': Article,
+    'agenda': Agenda,
+    'contacts': Contact,
+    'liens': Lien,
+    'guestbook': Guestbook,
+    'newsletter': Newsletter
+}

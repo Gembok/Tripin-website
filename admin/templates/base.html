@@ -2,10 +2,22 @@
 
 <html>
 <head>
-	<title>Admin</title>
+	<title>Administration | Trip In</title>
+	
+	<link rel="stylesheet" href="/static/admin/main.css" type="text/css" media="screen" charset="utf-8">
 </head>
 <body>
-	{% block content %}
-	{% endblock %}
+	{% block menu %}
+		<ul id="menu">
+		{% for m in menu %}
+			<li><a href="/admin/list/{{m}}">{{m}}</a></li>
+		{% endfor %}
+		</ul>
+	{% endblock%}
+	
+	<div id="content">
+		{% block content %}
+		{% endblock %}
+	</div>
 </body>
 </html>

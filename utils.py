@@ -1,4 +1,5 @@
 import datetime
+import time
 
 from google.appengine.ext import db, blobstore
 
@@ -26,13 +27,13 @@ def to_dicts(models):
         data.append(to_dict(model))
     return data
 
-
 def to_dicts_list(models, keys):
     data = []
     dicts = to_dicts(models)
     for d in dicts:
-        it = []
+        it = d
+        it.update({'fields': []})
         for key in keys:
-            it.append(d[key])
+            it['fields'].append(d[key])
         data.append(it)
     return data

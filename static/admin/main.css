@@ -1,0 +1,14 @@
+html, body, div, span, ul, li h1, h2, h3, h4, h5, h6 {margin: 0; padding: 0;}
+
+body {font: 16px Georgia, serif; padding: 20px;}
+
+ul {list-style-type: none;}
+
+#menu {float: left; width: 130px;}
+
+#content {margin-left: 150px;}
+
+label {display: block;}
+
+input[type=text] {width: 200px;}
+textarea {height: 250px; width: 400px;}

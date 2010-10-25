@@ -9,3 +9,6 @@ class AppHandler(webapp.RequestHandler):
 class MainHandler(AppHandler):
 	def get(self):
 		self.response.out.write('adf')
+
+
+routes = []
