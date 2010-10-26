@@ -98,7 +98,7 @@ class Form:
         })
     
     def render_files(self):
-        if not self.files: return ''
+        if not self.files or not self.model.id: return ''
         s = [f.render() for f in self.files]
         return view.render_form('files.html', {
             'fields': ''.join(s),
@@ -274,15 +274,23 @@ class File(FileField):
             blobstore.delete(self.instance_value.key())
             self.instance_value = None
     
+    def get_url(self):
+        if self.instance_value:
+            key = str(self.instance_value.key())
+        else:
+            return ''
+        if isinstance(self.property, front.models.ImageReferenceListProperty):
+            return images.get_serving_url(key)
+        return '/serve/%s' % key
+    
     def render(self):
         key = self.instance_value.key() if self.instance_value else ''
-        url = images.get_serving_url(self.instance_value) if self.instance_value else None
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'id': self.model.id,
             'model': self.model.name,
             'name': self.name,
-            'url': url,
+            'url': self.get_url(),
             'key': str(key)
         })
 
@@ -302,8 +310,18 @@ class FileList(FileField):
                 del self.instance_value[i]
                 return
         
-    def get_files(self):
-        return [str(f) for f in self.instance_value]
+    def get_urls(self):
+        data = []
+        for f in self.instance_value:
+            if isinstance(self.property, front.models.ImageReferenceListProperty):
+                url = images.get_serving_url(str(f))
+            else:
+                url = '/serve/%s' % str(f)
+            data.append({
+                'url': url,
+                'key': str(f)
+            })
+        return data
     
     def render(self):
         return view.render_form(self.get_filename(), {
@@ -312,5 +330,5 @@ class FileList(FileField):
             'model': self.model.name,
             'id': self.model.id,
             'fields': range(1,10),
-            'keys': self.get_files()
+            'files': self.get_urls()
         })

@@ -21,7 +21,8 @@ class MainHandler(AppHandler):
         self.render('main.html', {
             'test': 'ok',
             'contacts': self.contact(),
-            'agenda': self.agenda()
+            'agenda': self.agenda(),
+            'music': self.music()
         })
     
     def contact(self):
@@ -29,6 +30,9 @@ class MainHandler(AppHandler):
     
     def agenda(self):
         return models.Agenda().all().fetch(10)
+    
+    def music(self):
+        return models.Player().all().get().songs_set
 
 
 routes = [

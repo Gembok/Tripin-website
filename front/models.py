@@ -5,6 +5,12 @@ class BlobReferenceListProperty(db.ListProperty):
     def __init__(self, verbose_name):
         super(BlobReferenceListProperty, self).__init__(blobstore.BlobKey, verbose_name)
 
+class ImageReferenceListProperty(BlobReferenceListProperty):
+    pass
+
+class ImageReferenceProperty(blobstore.BlobReferenceProperty):
+    pass
+
 # Model classes
 class Biography(db.Model):
     text = db.TextProperty('Biographie')
@@ -13,12 +19,16 @@ class Album(db.Model):
     title = db.StringProperty('Titre')
     date = db.DateTimeProperty('Date')
 
+class Player(db.Model):
+    title = db.StringProperty('Titre')
+
 class Song(db.Model):
     title = db.StringProperty('Titre')
     mp3 = blobstore.BlobReferenceProperty('Chanson')
     lyrics = db.TextProperty('Paroles')
     track = db.IntegerProperty('Track')
     album = db.ReferenceProperty(Album, 'Album')
+    player = db.ReferenceProperty(Player, 'Player')
 
 class Agenda(db.Model):
     title = db.StringProperty('Titre')
@@ -29,7 +39,7 @@ class Agenda(db.Model):
 class Photo(db.Model):
     title = db.StringProperty('Titre')
     credits = db.StringProperty('Credits')
-    photos = BlobReferenceListProperty('Photos')
+    photos = ImageReferenceListProperty('Photos')
     concert = db.ReferenceProperty(Agenda, 'Concert')
 
 class Video(db.Model):

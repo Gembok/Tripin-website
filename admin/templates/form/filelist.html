@@ -4,6 +4,6 @@
 	<input type="file" name="{{name}}"><br />
 {% endfor %}
 <br />
-{% for key in keys %}
-	<a href="/serve/{{key}}">{{key}}</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{key}}">delete</a> <br />
+{% for file in files %}
+	<a href="{{file.url}}">{{file.url}}</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{file.key}}">delete</a> <br />
 {% endfor %}

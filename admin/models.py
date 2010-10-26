@@ -7,10 +7,19 @@ class AdminModel:
     show = []
     
     def __init__(self, id=None, name=''):
+        self.get_basics()
         self.id = id
         self.name = name
         self.instance = None
         self.get_instance()
+    
+    def get_basics(self):
+        if not self.model:
+            self.model = getattr(front.models, self.__class__.__name__)
+        if not self.edit:
+            self.edit = self.model.properties().keys()
+        if not self.show:
+            self.show = self.edit
     
     def make_form(self, post_data={}, upload_url=None):
         self.form = form.Form(self, self.get_edit_fields(), dict(post_data), upload_url)
@@ -83,59 +92,42 @@ class AdminModel:
 
 # User classes
 class Biography(AdminModel):
-    model = front.models.Biography
-    edit = ['text']
-    show = ['text']
+    pass
 
 class Album(AdminModel):
-    model = front.models.Album
-    edit = ['title', 'date']
-    show = ['title']
+    pass
 
 class Song(AdminModel):
-    model = front.models.Song
-    edit = ['title', 'track', 'mp3', 'lyrics', 'album']
     show = ['title', 'track']
 
 class Photo(AdminModel):
-    model = front.models.Photo
-    edit = ['title', 'concert', 'credits', 'photos']
     show = ['title']
 
 class Video(AdminModel):
-    model = front.models.Video
     edit = ['title', 'content']
     show = ['title']
 
 class Article(AdminModel):
-    model = front.models.Article
-    edit = ['titre', 'text']
     show = ['text']
 
 class Agenda(AdminModel):
-    model = front.models.Agenda
-    edit = ['title', 'date', 'place', 'link']
     show = ['title', 'place']
 
 class Contact(AdminModel):
-    model = front.models.Contact
-    edit = ['title', 'name', 'phone', 'email', 'address']
     show = ['name']
 
 class Lien(AdminModel):
-    model = front.models.Lien
-    edit = ['title', 'link']
-    show = edit
+    pass
 
 class Guestbook(AdminModel):
-    model = front.models.Guestbook
-    edit = ['name', 'text']
     show = ['name']
 
 class Newsletter(AdminModel):
-    model = front.models.Newsletter
-    edit = ['email']
-    show = ['email']
+    pass
+
+class Player(AdminModel):
+    pass
+
 
 registered = {
     'biographie': Biography,
@@ -148,5 +140,6 @@ registered = {
     'contacts': Contact,
     'liens': Lien,
     'guestbook': Guestbook,
-    'newsletter': Newsletter
+    'newsletter': Newsletter,
+    'player': Player
 }
