@@ -212,7 +212,10 @@ class Reference(FormField):
     filename = 'select'
     
     def parse_value(self):
-        return db.Key(self.post_value) if self.post_value else None
+        if isinstance(self.post_value, db.Model):
+            return self.post_value.key()
+        else:
+            return db.Key(self.post_value) if self.post_value else None
     
     def get_options(self):
         ref_model = getattr(self.model.model, self.name).reference_class
@@ -273,12 +276,13 @@ class File(FileField):
     
     def render(self):
         key = self.instance_value.key() if self.instance_value else ''
+        url = images.get_serving_url(self.instance_value) if self.instance_value else None
         return view.render_form(self.get_filename(), {
             'title': self.property.verbose_name,
             'id': self.model.id,
             'model': self.model.name,
             'name': self.name,
-            # 'url': images.get_serving_url(key),
+            'url': url,
             'key': str(key)
         })
 

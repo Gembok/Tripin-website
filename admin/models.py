@@ -1,5 +1,4 @@
 import front.models
-import adminmodel
 import form
 
 class AdminModel:
