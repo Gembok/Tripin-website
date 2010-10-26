@@ -16,22 +16,26 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 #title {background-image: url(/static/front/img/title.png); height: 141px; margin: 20px auto; width: 300px;}
 
-#menu {border-top: 1px solid #333; margin-top: -20px; padding: 50px 0;}
+#menu {border-top: 1px solid #fff; margin-top: -20px; padding: 50px 0;}
 #menu li {font-size: 20px; padding-bottom: 10px;}
 
-#contact {border-top: 1px solid #333; padding-top: 20px; text-align: left;}
+#contact {border-top: 1px solid #fff; padding-top: 20px; text-align: left;}
 #contact li {float: left; margin: 10px 10px; width: 220px;}
 #contact h2 {font-size: 18px;}
 #contact h3 {color: #ccc;}
 #contact .phone {font-size: 12px;}
 #contact a {font-size: 12px;}
 
-.aside {position: absolute; z-index: 2;}
+.aside {background-image: url(/static/front/img/px.png); color: #eee; padding: 15px; position: absolute; z-index: 2;
+		border-radius: 15px; }
+.aside h1 {color: #FF2C2C; font-size: 18px; margin: -10px 0 10px 0; opacity: 0.5;}
 #musique {left: 20px; top: 20px; width: 230px; height: 300px;}
 
 #agenda {right: 20px; top: 20px; width: 230px;}
-#agenda h1 {font-size: 16px;}
-#agenda address {font-style: normal;}
+#agenda li {margin: 10px 0;}
+#agenda h1 {text-align: right;}
+#agenda .place {font-size: 18px; display: block;}
+#agenda .title, #agenda .date {display: block; font-size: 14px; opacity: 0.8;}
 
 
 .background {height: 800px; position: absolute; top: 0; z-index: 1;}

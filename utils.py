@@ -8,9 +8,10 @@ def to_dict(model):
     for key, value in model.properties().iteritems():
         val = value.get_value_for_datastore(model)
         if isinstance(val, datetime.datetime):
-            ms = time.mktime(val.utctimetuple()) * 1000
-            ms += getattr(val, 'microseconds', 0) / 1000
-            val = int(ms)
+            val = time.mktime(val.utctimetuple())   # timestamp as float
+            # ms = time.mktime(val.utctimetuple()) * 1000
+            # ms += getattr(val, 'microseconds', 0) / 1000
+            # val = int(ms)
         elif isinstance(val, db.Model):
             val = to_dict(val)
         data[key] = val

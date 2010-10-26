@@ -11,10 +11,9 @@
 		<div id="title"></div>
 		
 		<ul id="menu">
-			<li><a href="#">Biographie</a></li>
-			<li><a href="#">Musique</a></li>
-			<li><a href="#">Textes</a></li>
-			<li><a href="#">Guestbook</a></li>
+			<li><a href="#/bio">Biographie</a></li>
+			<li><a href="#/music">Musique</a></li>
+			<li><a href="#/texts">Textes</a></li>
 		</ul>
 		
 		{{#contacts}}
@@ -41,7 +40,8 @@
 		
 		{{#agenda}}
 		<li>
-			<address>{{place}}</address>
+			<span class="place">{{place}}</span>
+			<span class="title">{{title}}</span>
 			<span class="date">{{date}}</span>
 		</li>
 		{{/agenda}}

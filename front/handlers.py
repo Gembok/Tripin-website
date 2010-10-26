@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
@@ -29,10 +30,14 @@ class MainHandler(AppHandler):
         return models.Contact().all().fetch(10)
     
     def agenda(self):
-        return models.Agenda().all().fetch(10)
+        agenda = models.Agenda().all().fetch(10)
+        agenda = utils.to_dicts(agenda)
+        for item in agenda:
+            item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y/%m/%d %H:%M')
+        return agenda
     
     def music(self):
-        return models.Player().all().get().songs_set
+        return models.Player().all().get().song_set
 
 
 routes = [
