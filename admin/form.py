@@ -197,7 +197,10 @@ class Date(FormField):
                 return datetime.datetime.strptime(self.post_value, format)
             except ValueError:
                 format = '%Y-%m-%d'
+            try:
                 return datetime.datetime.strptime(self.post_value, format)
+            except ValueError:
+                return False
 
 
 class Link(FormField):

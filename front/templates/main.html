@@ -7,46 +7,62 @@
 	<link rel="stylesheet" href="/static/front/css/main.css" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
-	<div id="content">
-		<div id="title"></div>
+	<div id="container">
+		<div id="content">
+			<div id="title"></div>
 		
-		<ul id="menu">
-			<li><a href="#/bio">Biographie</a></li>
-			<li><a href="#/music">Musique</a></li>
-			<li><a href="#/texts">Textes</a></li>
-		</ul>
+			<ul id="menu">
+				<li><a href="#/bio">Biographie</a></li>
+				<li><a href="#/music">Musique</a></li>
+				<li><a href="#/texts">Textes</a></li>
+			</ul>
 		
-		{{#contacts}}
-		<ul id="contact">
+			{{#contacts}}
+			<ul id="contact">
+				<li>
+					<span class="title">{{title}}</span>
+					<span class="name">{{name}}</span>
+					<span class="phone">{{phone}}</span>
+					<a href="mailto:{{email}}" class="email">{{email}}</a>
+				</li>			
+			</ul>
+			{{/contacts}}
+		</div>
+	
+		<div id="musique" class="aside">
+			<h1>Musique</h1>
+			{{#music}}
+				{{title}}
+			{{/music}}
+		</div>
+	
+		<ul id="agenda" class="aside">
+			<h1>Agenda</h1>
+		
+			{{#agenda}}
 			<li>
-				<h2>{{title}}</h2>
-				<h3>{{name}}</h3>
-				<span class="phone">{{phone}}</span><br />
-				<a href="mailto:{{email}}">{{email}}</a>
-			</li>			
+				<span class="place">{{place}}</span>
+				<span class="title">{{title}}</span>
+				<span class="date">{{date}}</span>
+			</li>
+			{{/agenda}}
 		</ul>
-		{{/contacts}}
+	
+		<div id="back-left" class="background"></div>
+		<div id="back-right" class="background"></div>
 	</div>
 	
-	<div id="musique" class="aside">
-		<h1>Musique</h1>
-		{{#music}}
-			{{title}}
-		{{/music}}
-	</div>
-	
-	<ul id="agenda" class="aside">
-		<h1>Agenda</h1>
+	<div id="slide">
+		<ul id="page_menu">
+			<li>test</li>
+			<li>test</li>
+		</ul>
 		
-		{{#agenda}}
-		<li>
-			<span class="place">{{place}}</span>
-			<span class="title">{{title}}</span>
-			<span class="date">{{date}}</span>
-		</li>
-		{{/agenda}}
-	</ul>
+		<div id="page"></div>
+	</div>
 	
-	<div id="back-left" class="background"></div>
-	<div id="back-right" class="background"></div>
+	<script src="/static/front/js/ext/jquery-1.4.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/front/js/ext/jquery.hashlisten.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/front/js/ext/mustache.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/front/js/app.js" type="text/javascript" charset="utf-8"></script>
 </body>

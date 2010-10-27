@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import simplejson as json
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
 
@@ -9,12 +10,19 @@ import models
 import utils
 
 class AppHandler(webapp.RequestHandler):
-    def render(self, filename, data):
+    def prepare(self, data):
         for k,v in data.iteritems():
             if isinstance(v, db.Model):
                 data[k] = utils.to_dict(v)
             elif isinstance(v, list) and len(v) and isinstance(v[0], db.Model):
                 data[k] = utils.to_dicts(v)
+        return data
+    
+    def renderjson(self, data):
+        self.response.out.write(json.dumps(data))
+    
+    def render(self, filename, data):
+        data = self.prepare(data)
         view.render(self, filename, data)
 
 class MainHandler(AppHandler):
@@ -39,7 +47,19 @@ class MainHandler(AppHandler):
     def music(self):
         return models.Player().all().get().song_set
 
+class BioHandler(AppHandler):
+    def get(self):
+        bio = models.Biography().all().get()
+        self.renderjson({
+            'bio': bio.text
+        })
+
+class MusicHandler(AppHandler):
+    def get(self, id):
+        pass
 
 routes = [
+    (r'^/bio/?', BioHandler),
+    (r'^/music/?(\d+)?/?', MusicHandler),
     (r'^/', MainHandler)
 ]

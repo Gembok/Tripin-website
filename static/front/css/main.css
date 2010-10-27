@@ -1,4 +1,4 @@
-body, div, ul, li, h1, h2, h3, h4, h5, h6 {margin: 0; padding: 0;}
+body, div, ul, li, h1, h2, h3, h4, h5, h6, a, span {margin: 0; padding: 0;}
 h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: normal;}
 
 /* tags */
@@ -12,32 +12,33 @@ a:hover {color: #A8332F;}
 /* structure */
 body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; overflow: hidden;}
 
-#content {margin: 0 auto; position: relative; text-align: center; width: 500px; z-index: -1;}
+#content {margin: 0 auto; position: relative; text-align: center; width: 500px; z-index: 1;}
 
 #title {background-image: url(/static/front/img/title.png); height: 141px; margin: 20px auto; width: 300px;}
 
 #menu {border-top: 1px solid #fff; margin-top: -20px; padding: 50px 0;}
 #menu li {font-size: 20px; padding-bottom: 10px;}
 
-#contact {border-top: 1px solid #fff; padding-top: 20px; text-align: left;}
+#contact {border-top: 0px solid #fff; overflow: auto; padding-top: 20px; text-align: left;}
 #contact li {float: left; margin: 10px 10px; width: 220px;}
-#contact h2 {font-size: 18px;}
-#contact h3 {color: #ccc;}
-#contact .phone {font-size: 12px;}
-#contact a {font-size: 12px;}
+#contact span, #contact a {color: #ccc; display: block; font-size: 12px;}
+#contact .title {color: inherit; font-size: 18px;}
 
-.aside {background-image: url(/static/front/img/px.png); color: #eee; padding: 15px; position: absolute; z-index: 2;
-		border-radius: 15px; }
-.aside h1 {color: #FF2C2C; font-size: 18px; margin: -10px 0 10px 0; opacity: 0.5;}
-#musique {left: 20px; top: 20px; width: 230px; height: 300px;}
+.aside {background-image: url(/static/front/img/px.png); color: #eee; padding: 15px; position: absolute; z-index: 20;}
+.aside h1 {font-size: 18px; margin: -10px 0 10px 0;}
+#musique {left: 0px; top: 0px; width: 300px;}
 
-#agenda {right: 20px; top: 20px; width: 230px;}
-#agenda li {margin: 10px 0;}
+#agenda {right: 0px; top: 0px; width: 270px;}
+#agenda li {margin: 10px 0; text-align: center;}
 #agenda h1 {text-align: right;}
 #agenda .place {font-size: 18px; display: block;}
-#agenda .title, #agenda .date {display: block; font-size: 14px; opacity: 0.8;}
+#agenda .title, #agenda .date {color: #ccc; display: block; font-size: 14px;}
+
+#slide {height: 500px; position: absolute; top: -500px; z-index: 100;}
+
+#container {left: 0px; position: absolute; right: 0px; top: 0px;}
 
 
-.background {height: 800px; position: absolute; top: 0; z-index: 1;}
+.background {height: 800px; position: absolute; top: 0; z-index: 10;}
 #back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
 #back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
