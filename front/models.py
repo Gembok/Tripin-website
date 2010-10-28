@@ -18,6 +18,7 @@ class Biography(db.Model):
 class Album(db.Model):
     title = db.StringProperty('Titre')
     date = db.DateTimeProperty('Date')
+    artwork = ImageReferenceProperty('Artwork')
 
 class Player(db.Model):
     title = db.StringProperty('Titre')

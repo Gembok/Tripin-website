@@ -95,7 +95,7 @@ class Biography(AdminModel):
     pass
 
 class Album(AdminModel):
-    pass
+    show = ['title']
 
 class Song(AdminModel):
     show = ['title', 'track']

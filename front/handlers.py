@@ -18,8 +18,11 @@ class AppHandler(webapp.RequestHandler):
                 data[k] = utils.to_dicts(v)
         return data
     
-    def renderjson(self, data):
-        self.response.out.write(json.dumps(data))
+    def renderjson(self, filename, data):
+        self.response.out.write(json.dumps({
+            'data': self.prepare(data),
+            'template': view.get_file(filename)
+        }))
     
     def render(self, filename, data):
         data = self.prepare(data)
@@ -50,13 +53,19 @@ class MainHandler(AppHandler):
 class BioHandler(AppHandler):
     def get(self):
         bio = models.Biography().all().get()
-        self.renderjson({
+        self.renderjson('bio.html', {
             'bio': bio.text
         })
 
 class MusicHandler(AppHandler):
     def get(self, id):
-        pass
+        albums = models.Album().all().fetch(10)
+        albums = utils.to_dicts(albums, 200)
+        for item in albums:
+            item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y')
+        self.renderjson('music.html', {
+            'albums': albums
+        })
 
 routes = [
     (r'^/bio/?', BioHandler),
