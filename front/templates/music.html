@@ -1,5 +1,21 @@
-{{#albums}}
-	{{title}}
-	{{date}}
-	<img src="{{artwork}}">
-{{/albums}}
+<div id="music">
+
+	<ul id="albums">
+		{{#albums}}
+			<li><a href="#/music/{{id}}"><img src="{{artwork}}"></a></li>
+		{{/albums}}
+	</ul>
+
+	<div id="album">
+		{{#album}}
+			<img src="{{artwork}}">
+			<h1 class="title">{{title}}</h1>
+			<ul>
+			{{#songs}}
+				<li>{{track}}. {{title}}</li>
+			{{/songs}}
+			</ul>
+		{{/album}}
+	</div>
+
+</div>

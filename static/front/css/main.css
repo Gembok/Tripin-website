@@ -3,7 +3,7 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: normal;}
 
 /* tags */
 ul {list-style-type: none;}
-h1 {font-size: 16px;}
+/*h1 {font-size: 16px;}*/
 
 /* links */
 a {color: #fff; text-decoration: none;}
@@ -42,3 +42,16 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 .background {height: 800px; position: absolute; top: 0; z-index: 10;}
 #back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
 #back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
+
+
+/* slide */
+#slide {padding: 10px; width: 100%;}
+#page_menu {height: 40px; margin: 0 0 0 20px; text-align: center;}
+#page_menu li {display: inline;}
+
+/* pages */
+#albums {float: left; width: 100px;}
+#album {margin-left: 120px;}
+#album img {float: left; margin: 0 10px;}
+#album h1 {font-size: 24px; margin: 0 0 10px 0;}
+#album ul {margin-left: 330px;}
