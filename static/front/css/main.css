@@ -34,8 +34,6 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #agenda .place {font-size: 18px; display: block;}
 #agenda .title, #agenda .date {color: #ccc; display: block; font-size: 14px;}
 
-#slide {height: 500px; position: absolute; top: -500px; z-index: 100;}
-
 #container {left: 0px; position: absolute; right: 0px; top: 0px;}
 
 
@@ -45,7 +43,7 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 
 /* slide */
-#slide {padding: 10px; width: 100%;}
+#slide {height: 500px; padding: 10px; position: absolute; top: -500px; width: 100%; z-index: 100;}
 #page_menu {height: 40px; margin: 0 0 0 20px; text-align: center;}
 #page_menu li {display: inline;}
 
@@ -55,3 +53,8 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #album img {float: left; margin: 0 10px;}
 #album h1 {font-size: 24px; margin: 0 0 10px 0;}
 #album ul {margin-left: 330px;}
+
+#media #choice {background-color: #222; height: 110px; margin: 0 auto; text-align: center; width: 360px; border-radius: 30px;}
+	#choice a {color: #ccc; display: block; float: left; margin: 16px 0; height: 65px; width: 120px;}
+	#choice span {display: none;}
+	#choice img {height: 65px;}
