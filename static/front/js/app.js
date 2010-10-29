@@ -10,7 +10,7 @@ $(function() {
 });
 
 $.hashListen('/', function() {
-	slideUp();
+	fadeBack();
 });
 
 $.hashListen('/:action/?', function(action) {
@@ -31,24 +31,28 @@ $.hashListen('/:action/([0-9]+)/?', function(action, id) {
 	});
 });
 
-
-function slideDown(top) {
-	var top = 500;
-	$('#slide').height(top);
-	$('#container').animate({top: top}, 300, 'swing');
-}
-
-function slideUp() {
-	$('#page').fadeOut(150);
-	$('#container').animate({top: 0}, 300, 'swing');
-}
-
 function fill(data, top) {
 	var html = Mustache.to_html(data.template, data.data);
 	
-	$('#page').fadeOut(150, function() {
-		$(this).html(html);
-		slideDown(top);
-		$(this).fadeIn(500);
+	function fill() {
+		$('#page').html(html);
+	}
+	
+	if ($('#pages').css('display') == 'none') {
+		$('#home').fadeOut(300, function() {
+			fill();
+			$('#pages').fadeIn(300);
+		});
+	} else {
+		$('#page').fadeOut(300, function() {
+			fill();
+			$(this).fadeIn(300);
+		});
+	}
+}
+
+function fadeBack() {
+	$('#pages').fadeOut(300, function() {
+		$('#home').fadeIn(300);
 	});
 }
