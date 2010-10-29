@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 
 import simplejson as json
+import markdown2
 from google.appengine.ext import webapp
 from google.appengine.ext import db, blobstore
 from google.appengine.api import images
@@ -58,7 +59,7 @@ class BioHandler(AppHandler):
     def get(self):
         bio = models.Biography().all().get()
         self.renderjson('bio.html', {
-            'bio': bio.text
+            'bio': markdown2.markdown(bio.text)
         })
 
 
