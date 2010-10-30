@@ -1,8 +1,9 @@
-body, div, ul, li, h1, h2, h3, h4, h5, h6, a, span {margin: 0; padding: 0;}
+body, div, ul, li, h1, h2, h3, h4, h5, h6, a, span, img {margin: 0; padding: 0;}
 h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: normal;}
 
 /* tags */
 ul {list-style-type: none;}
+img, a {border: none;}
 /*h1 {font-size: 16px;}*/
 
 /* links */
@@ -46,7 +47,9 @@ p {color: #bbb; line-height: 1.5em;}
 #pages {display: none; padding: 20px;}
 #page_menu {height: 40px; margin: 0 0 20px 0; text-align: center;}
 #page_menu li {display: inline;}
-.pages-background {background: #000 url() no-repeat scroll 0px 0px; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -10; opacity: 0.6;}
+.pages-background {background: #000 url() no-repeat scroll 0px 0px; display: none; opacity: 0.6; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -10;}
+#pages .menu {float: left; width: 100px;}
+#pages .view {margin-left: 100px;}
 
 #bio {font-size: 14px; position: absolute; right: 20px; top: 50px; width: 700px;}
 #bio-background {background-image: url(/static/front/img/pages/tripin.jpg); background-position: -200px 0px;}
@@ -62,3 +65,10 @@ p {color: #bbb; line-height: 1.5em;}
 #choice a {color: #ccc; display: block; float: left; margin: 16px 0; height: 65px; width: 120px;}
 #choice span {display: none;}
 #choice img {height: 65px;}
+
+#photo h1 {font-size: 1.5em;}
+#photo h2 {display: inline;}
+#photo h3 {display: inline;}
+#photo div {margin-top: 20px;}
+#photo a {display: block; float: left; margin: 0 10px 5px 0;}
+

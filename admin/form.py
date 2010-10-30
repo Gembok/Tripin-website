@@ -229,7 +229,7 @@ class Reference(FormField):
         return items_dict
     
     def check_if_selected(self, item):
-        if (self.instance_value) and (item['key'] == self.instance_value.key()):
+        if (self.instance_value) and (item['key'] == str(self.instance_value.key())):
             item['selected'] = 'selected="selected"'
     
     def render(self):

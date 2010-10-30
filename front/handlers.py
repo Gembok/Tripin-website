@@ -108,13 +108,55 @@ class MediaHandler(AppHandler):
 class PhotosHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        pass
+        self.m = models.Photo()
+        self.renderjson('photos.html', {
+          'photos': self.photos(),
+          'photo': self.photo(id)
+        })
+        
+    def photos(self):
+        photos = self.m.all().fetch(10)
+        photosd = utils.to_dicts(photos)
+        for item in photosd:
+            item['photos'] = []
+            item['img'] = images.get_serving_url(item['img'], 80, True)
+        return photosd
+    
+    def photo(self, id):
+        if not id:
+            photo = self.m.all().get()
+        else:
+            photo = self.m.get_by_id(id)
+        photod = utils.to_dict(photo)
+        photod['concert'] = photo.concert.title
+        for i in range(len(photod['photos'])):
+            url = images.get_serving_url(str(photod['photos'][i]), 80, True)
+            photod['photos'][i] = {'url': url}
+        return photod
 
 
 class VideosHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        pass
+        self.m = models.Video()
+        self.renderjson('videos.html', {
+            'videos': self.videos(),
+            'video': self.video(id)
+        })
+    
+    def videos(self):
+        videos = self.m.all().fetch(10)
+        videosd = utils.to_dicts(videos)
+        for item in videosd:
+            item['content'] = ''
+        return videosd
+    
+    def video(self, id):
+        if not id:
+            video = self.m.all().get()
+        else:
+            video = self.m.get_by_id(id)
+        return utils.to_dict(video)
 
 
 class PresseHandler(AppHandler):

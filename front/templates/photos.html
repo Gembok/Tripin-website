@@ -1,0 +1,20 @@
+<ul id="photos" class="menu">
+{{#photos}}
+		<li><a href="#/photos/{{id}}"><img src="{{img}}" /></a></li>
+{{/photos}}
+</ul>
+
+<div id="photo" class="view">
+{{#photo}}
+	<h1>{{title}}</h1>
+	<h2>{{concert}}</h2> | <h3>Par {{credits}}</h3>
+	
+	<div>
+	{{#photos}}
+		<a class="photo"><img src="{{url}}" /></a>
+	{{/photos}}
+	</div>
+{{/photo}}
+</div>
+
+<div class="pages-background"></div>

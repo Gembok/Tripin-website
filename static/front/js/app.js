@@ -41,18 +41,26 @@ function fill(data, top) {
 	if ($('#pages').css('display') == 'none') {
 		$('#home').fadeOut(300, function() {
 			fill();
-			$('#pages').fadeIn(300);
+			$('#pages').fadeIn(300, function() {
+				$('.pages-background').fadeIn(300);
+			});
 		});
 	} else {
-		$('#page').fadeOut(300, function() {
-			fill();
-			$(this).fadeIn(300);
+		$('.pages-background').fadeOut(200, function() {
+			$('#page').fadeOut(200, function() {
+				fill();
+				$(this).fadeIn(200, function() {
+					$('.pages-background').fadeIn(200);
+				});
+			});
 		});
 	}
 }
 
 function fadeBack() {
-	$('#pages').fadeOut(300, function() {
-		$('#home').fadeIn(300);
+	$('.pages-background').fadeOut(200, function() {
+		$('#pages').fadeOut(200, function() {
+			$('#home').fadeIn(200);
+		});
 	});
 }

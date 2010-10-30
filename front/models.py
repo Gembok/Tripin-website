@@ -40,6 +40,7 @@ class Agenda(db.Model):
 class Photo(db.Model):
     title = db.StringProperty('Titre')
     credits = db.StringProperty('Credits')
+    img = ImageReferenceProperty('Image')
     photos = ImageReferenceListProperty('Photos')
     concert = db.ReferenceProperty(Agenda, 'Concert')
 
@@ -50,6 +51,7 @@ class Video(db.Model):
 class Article(db.Model):
     title = db.StringProperty('Titre')
     text = db.TextProperty('Texte')
+    img = ImageReferenceProperty('Image')
 
 class Contact(db.Model):
     title = db.StringProperty('Titre')
