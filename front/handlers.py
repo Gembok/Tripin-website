@@ -197,16 +197,35 @@ class PresseHandler(AppHandler):
 
 
 class NewsletterHandler(AppHandler):
-    def get(self):
+    def get(self, delete):
         email = self.request.get('email', None)
+        if delete:
+            self.delete(email)
+            return
+        else:
+            self.subscribe(email)
+            return
+    
+    def subscribe(self, email):
         if not email:
-            self.response.out.write('{confirm: 0}')
+            self.response.out.write('0')
             return
         if models.Newsletter.gql('WHERE email = :1', email).count():
-            self.response.out.write('{confirm: 2}')
+            self.response.out.write('2')
             return
         models.Newsletter(email=email).put()
-        self.response.out.write('{confirm: 1}')
+        self.response.out.write('1')
+    
+    def delete(self, email):
+        if not email:
+            self.reponse.out.write('Email non valide')
+            return
+        query = models.Newsletter.gql('WHERE email = :1', email)
+        if query.count():
+            query.get().delete()
+            self.response.out.write('L\'addresse email "%s" a removed de la newsletter.' % email)
+        else:
+            self.response.out.write('...')
 
 
 routes = [
@@ -217,6 +236,6 @@ routes = [
     (r'^/videos/?(\d+)?/?', VideosHandler),
     (r'^/presse/?(\d+)?/?', PresseHandler),
     (r'^/media/?', MediaHandler),
-    (r'^/newsletter/?', NewsletterHandler),
+    (r'^/newsletter/?(\w+)?/?', NewsletterHandler),
     (r'^/', MainHandler)
 ]
