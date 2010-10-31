@@ -41,7 +41,7 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
 #back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
 
-p {color: #bbb; line-height: 1.5em;}
+p {color: #bbb; font-size: 12px; line-height: 1.5em;}
 
 /* pages */
 #pages {display: none; padding: 20px;}

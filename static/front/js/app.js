@@ -7,7 +7,23 @@ $(function() {
 
 	$('#media-presse').live('mouseenter', function() { $('span#presse').fadeIn(200);});
 	$('#media-presse').live('mouseleave', function() { $('span#presse').fadeOut(300);});
+	
+	// $(".gallery").live('click', function(){ $(this).fancybox(); });
+	
+	$('#newsletter').submit(newsletter);
+	
+	$('#player').jPlayer({
+		ready: play,
+		swfPath: '/static/front/Jplayer.swf',
+		bgcolor: '#000000'
+	});
 });
+
+
+function play() {
+	
+}
+
 
 $.hashListen('/', function() {
 	fadeBack();
@@ -63,4 +79,24 @@ function fadeBack() {
 			$('#home').fadeIn(200);
 		});
 	});
+}
+
+
+function newsletter() {
+	var form = $('#newsletter');
+	var value = $('#newsletter input').val();
+	
+	$.getJSON(form.attr('action'), {email: value}, function(data) {
+		var conf = $('#confirm');
+		if (data.confirm == 0) {
+			var mess = 'not subbmitted';
+		} else if(data.confirm == 2) {
+			var mess = 'already subscribed';
+		} else {
+			var mess = 'ok';
+		}
+		conf.html(mess);
+	});
+	
+	return false;
 }

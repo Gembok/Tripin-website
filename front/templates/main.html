@@ -5,6 +5,7 @@
 	<title>Trip in</title>
 	
 	<link rel="stylesheet" href="/static/front/css/main.css" type="text/css" media="all" charset="utf-8">
+	<link rel="stylesheet" href="/static/front/css/jquery.lightbox-0.5.css" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
 	<div id="home">
@@ -31,12 +32,21 @@
 		</div>
 	
 		<div id="musique" class="aside">
-			<h1>Musique</h1>
+			<div id="player"></div>
+			
 			{{#music}}
-				{{title}}
+			<ul id="music-urls">
+				<li>{{url}}</li>
+			</ul>
 			{{/music}}
+			
+			<form action="/newsletter" method="get" id="newsletter">
+				<input type="text" name="email" placeholder='email' />
+				<button type="submit">S'inscrire &agrave; la newsletter</button>
+				<span id="confirm"></span>
+			</form>
 		</div>
-	
+		
 		<ul id="agenda" class="aside">
 			<h1>Agenda</h1>
 		
@@ -68,5 +78,7 @@
 	<script src="/static/front/js/ext/jquery-1.4.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/front/js/ext/jquery.hashlisten.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/front/js/ext/mustache.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/front/js/ext/jquery.jplayer.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/front/js/ext/jquery.lightbox-0.5.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/front/js/app.js" type="text/javascript" charset="utf-8"></script>
 </body>

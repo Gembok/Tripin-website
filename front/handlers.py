@@ -52,7 +52,12 @@ class MainHandler(AppHandler):
         return agenda
     
     def music(self):
-        return models.Player().all().get().song_set
+        songs = models.Player().all().get().song_set
+        songsd = []
+        for s in songs:
+            songsd.append({
+                'url': '/serve/%s' % s.key()
+            })
 
 
 class BioHandler(AppHandler):
@@ -130,8 +135,10 @@ class PhotosHandler(AppHandler):
         photod = utils.to_dict(photo)
         photod['concert'] = photo.concert.title
         for i in range(len(photod['photos'])):
-            url = images.get_serving_url(str(photod['photos'][i]), 80, True)
-            photod['photos'][i] = {'url': url}
+            key = str(photod['photos'][i])
+            url = images.get_serving_url(key, 80, True)
+            url_big = images.get_serving_url(key, 720)
+            photod['photos'][i] = {'url': url, 'url_big': url_big}
         return photod
 
 
@@ -162,7 +169,44 @@ class VideosHandler(AppHandler):
 class PresseHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        pass
+        self.m = models.Article()
+        self.renderjson('presse.html', {
+            'articles': self.articles(),
+            'article': self.article(id)
+        })
+    
+    def articles(self):
+        items = self.m.all().fetch(10)
+        itemsd = utils.to_dicts(items)
+        for item in itemsd:
+            item['text'] = ''
+            item['img'] = ''
+        return itemsd
+
+    def article(self, id):
+        if not id:
+            item = self.m.all().get()
+        else:
+            item = self.m.get_by_id(id)
+        itemd = utils.to_dict(item)
+        itemd['text'] = markdown2.markdown(itemd['text'])
+        key = itemd['img']
+        itemd['img'] = images.get_serving_url(key, 200)
+        itemd['img_big'] = images.get_serving_url(key, 1024)
+        return itemd
+
+
+class NewsletterHandler(AppHandler):
+    def get(self):
+        email = self.request.get('email', None)
+        if not email:
+            self.response.out.write('{confirm: 0}')
+            return
+        if models.Newsletter.gql('WHERE email = :1', email).count():
+            self.response.out.write('{confirm: 2}')
+            return
+        models.Newsletter(email=email).put()
+        self.response.out.write('{confirm: 1}')
 
 
 routes = [
@@ -173,5 +217,6 @@ routes = [
     (r'^/videos/?(\d+)?/?', VideosHandler),
     (r'^/presse/?(\d+)?/?', PresseHandler),
     (r'^/media/?', MediaHandler),
+    (r'^/newsletter/?', NewsletterHandler),
     (r'^/', MainHandler)
 ]
