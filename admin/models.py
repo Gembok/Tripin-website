@@ -128,6 +128,9 @@ class Newsletter(AdminModel):
 class Player(AdminModel):
     pass
 
+class Ressources(AdminModel):
+    show = ['title']
+
 
 registered = {
     'biographie': Biography,
@@ -141,5 +144,6 @@ registered = {
     'liens': Lien,
     'guestbook': Guestbook,
     'newsletter': Newsletter,
-    'player': Player
+    'player': Player,
+    'ressources': Ressources
 }

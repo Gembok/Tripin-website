@@ -70,3 +70,10 @@ class Guestbook(db.Model):
 
 class Newsletter(db.Model):
     email = db.EmailProperty('Email')
+
+class Ressources(db.Model):
+    title = db.StringProperty('Titre')
+    pressekit = blobstore.BlobReferenceProperty('Pressekit')
+    tech = blobstore.BlobReferenceProperty('Fiche Technique')
+    scene = blobstore.BlobReferenceProperty('Plan de scene')
+    photos = blobstore.BlobReferenceProperty('Photos')

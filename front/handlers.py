@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+import urllib
 
 import simplejson as json
 import markdown2
@@ -38,31 +39,35 @@ class MainHandler(AppHandler):
             'test': 'ok',
             'contacts': self.contact(),
             'agenda': self.agenda(),
-            'music': self.music()
+            'player': self.player()
         })
     
     def contact(self):
-        return models.Contact().all().fetch(10)
+        return models.Contact.all().fetch(10)
     
     def agenda(self):
-        agenda = models.Agenda().all().fetch(10)
+        agenda = models.Agenda.all().fetch(10)
         agenda = utils.to_dicts(agenda)
         for item in agenda:
             item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y/%m/%d %H:%M')
         return agenda
     
-    def music(self):
-        songs = models.Player().all().get().song_set
-        songsd = []
-        for s in songs:
-            songsd.append({
-                'url': '/serve/%s' % s.key()
-            })
+    def player(self):
+        try:
+            songs = models.Player.all().get().song_set
+        except AttributeError:
+            return ''
+        url = '/serve/%s'
+        data = {
+            'mp3': '|'.join([url % str(s.mp3.key()) for s in songs]),
+            'title': '|'.join([s.title for s in songs])
+        }
+        return urllib.urlencode(data).replace('%3D','=')
 
 
 class BioHandler(AppHandler):
     def get(self):
-        bio = models.Biography().all().get()
+        bio = models.Biography.all().get()
         self.renderjson('bio.html', {
             'bio': markdown2.markdown(bio.text)
         })
@@ -71,7 +76,7 @@ class BioHandler(AppHandler):
 class MusicHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        self.m = models.Album()
+        self.m = models.Album
         self.renderjson('music.html', {
             'albums': self.albums(),
             'album': self.album(id)
@@ -113,7 +118,7 @@ class MediaHandler(AppHandler):
 class PhotosHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        self.m = models.Photo()
+        self.m = models.Photo
         self.renderjson('photos.html', {
           'photos': self.photos(),
           'photo': self.photo(id)
@@ -145,7 +150,7 @@ class PhotosHandler(AppHandler):
 class VideosHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        self.m = models.Video()
+        self.m = models.Video
         self.renderjson('videos.html', {
             'videos': self.videos(),
             'video': self.video(id)
@@ -169,7 +174,7 @@ class VideosHandler(AppHandler):
 class PresseHandler(AppHandler):
     def get(self, id):
         id = int(id or 0)
-        self.m = models.Article()
+        self.m = models.Article
         self.renderjson('presse.html', {
             'articles': self.articles(),
             'article': self.article(id)
@@ -201,10 +206,8 @@ class NewsletterHandler(AppHandler):
         email = self.request.get('email', None)
         if delete:
             self.delete(email)
-            return
         else:
             self.subscribe(email)
-            return
     
     def subscribe(self, email):
         if not email:
@@ -228,6 +231,26 @@ class NewsletterHandler(AppHandler):
             self.response.out.write('...')
 
 
+class GuestbookHandler(AppHandler):
+    def get(self):
+        mess = models.Guestbook.all().fetch(10)
+        messd = utils.to_dicts(mess)
+        for m in messd:
+            m['text'] = markdown2.markdown(m['text'])
+        self.renderjson('guestbook.html', {
+            'mess': messd
+        })
+    
+    def post(self):
+        name = self.request.get('name', '')
+        text = self.request.get('text', '')
+        if name and text:
+            models.Guestbook(name=name, text=text).put()
+            self.response.out.write('1')
+        else:
+            self.response.out.write('0')
+
+
 routes = [
     (r'^/bio/?', BioHandler),
     (r'^/music/?(\d+)?/?', MusicHandler),
@@ -237,5 +260,6 @@ routes = [
     (r'^/presse/?(\d+)?/?', PresseHandler),
     (r'^/media/?', MediaHandler),
     (r'^/newsletter/?(\w+)?/?', NewsletterHandler),
+    (r'^/guestbook/?', GuestbookHandler),
     (r'^/', MainHandler)
 ]

@@ -11,19 +11,9 @@ $(function() {
 	// $(".gallery").live('click', function(){ $(this).fancybox(); });
 	
 	$('#newsletter').submit(newsletter);
-	
-	$('#player').jPlayer({
-		ready: play,
-		swfPath: '/static/front/Jplayer.swf',
-		bgcolor: '#000000'
-	});
+	$('#guestbook_link').click(function() {$('#guestbook_form').slideToggle(); return false;});
+	$('#guestbook_form').submit(guestbook);
 });
-
-
-function play() {
-	
-}
-
 
 $.hashListen('/', function() {
 	fadeBack();
@@ -84,12 +74,11 @@ function fadeBack() {
 
 function newsletter() {
 	var form = $('#newsletter');
-	var value = $('#newsletter input').val();
 	
 	$.ajax({
 		url: form.attr('action'),
-		data: {email: value},
-		method: 'get',
+		data: form.serialize(),
+		type: 'GET',
 		format: 'text',
 		success: function(data) {
 			console.log(data);
@@ -102,6 +91,26 @@ function newsletter() {
 				var mess = 'ok';
 			}
 			conf.html(mess);
+		}
+	});
+	
+	return false;
+}
+
+function guestbook() {
+	var form = $('#guestbook_form');
+	
+	$.ajax({
+		url: form.attr('action'),
+		data: form.serialize(),
+		type: 'POST',
+		format: 'text',
+		success: function(data) {
+			if (data == '1') {
+				window.location = '#/guestbook';
+			} else {
+				console.log('error');
+			}
 		}
 	});
 	

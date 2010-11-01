@@ -1,0 +1,13 @@
+showplaylistnumbers=0
+loop=1
+sliderwidth=10
+buttonovercolor=A8332F
+sliderovercolor=A8332F
+currentmp3color=A8332F
+loadingcolor=5D7674
+playlistcolor=000000
+bgcolor=000000
+bgcolor1=000000
+bgcolor2=000000
+buttoncolor=ffffff
+playlistalpha=0

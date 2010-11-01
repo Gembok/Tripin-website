@@ -32,18 +32,25 @@
 		</div>
 	
 		<div id="musique" class="aside">
-			<div id="player"></div>
-			
-			{{#music}}
-			<ul id="music-urls">
-				<li>{{url}}</li>
-			</ul>
-			{{/music}}
+			<div id="player">
+				<object type="application/x-shockwave-flash" data="/static/player_multi.swf" width="200" height="100">
+				    <param name="movie" value="player_multi.swf" />
+				    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
+				</object>
+			</div>
 			
 			<form action="/newsletter" method="get" id="newsletter">
 				<input type="text" name="email" placeholder='email' />
 				<button type="submit">S'inscrire &agrave; la newsletter</button>
 				<span id="confirm"></span>
+			</form>
+			
+			<a href="#/guestbook/new" id="guestbook_link">Laissez-nous un message</a>
+			<a href="#/guestbook" class="small block">Voir tous les messages</a>
+			<form action="guestbook" id="guestbook_form" method="post">
+				<input type="text" name="name" placeholder="Nom">
+				<textarea name="text"></textarea>
+				<button type="submit">Envoyer</button>
 			</form>
 		</div>
 		
