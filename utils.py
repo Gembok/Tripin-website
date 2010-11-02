@@ -1,6 +1,7 @@
 import datetime
 import time
 
+import markdown2
 from google.appengine.ext import db, blobstore
 from google.appengine.api import images
 
@@ -13,6 +14,8 @@ def to_dict(model):
         val = value.get_value_for_datastore(model)
         if isinstance(val, datetime.datetime):
             val = time.mktime(val.utctimetuple())
+        elif isinstance(val, db.Text):
+            val = markdown2.markdown(val)
         elif isinstance(val, db.Model):
             val = to_dict(val)
         elif isinstance(val, (blobstore.BlobKey, db.Key)):

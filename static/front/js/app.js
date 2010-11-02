@@ -39,6 +39,7 @@ $.hashListen('/:action/([0-9]+)/?', function(action, id) {
 
 function fill(data, top) {
 	var html = Mustache.to_html(data.template, data.data);
+	console.log(data);
 	
 	function fill() {
 		$('#page').html(html);

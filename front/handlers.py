@@ -12,6 +12,8 @@ import view
 import models
 import utils
 
+serve_url = '/serve/%s'
+
 class AppHandler(webapp.RequestHandler):
     def prepare(self, data=None):
         if not data: return None
@@ -46,11 +48,11 @@ class MainHandler(AppHandler):
         return models.Contact.all().fetch(10)
     
     def agenda(self):
-        agenda = models.Agenda.all().fetch(10)
-        agenda = utils.to_dicts(agenda)
-        for item in agenda:
+        agenda = models.Agenda.all().filter('date >=', datetime.now()).fetch(100)
+        agendad = utils.to_dicts(agenda)
+        for item in agendad:
             item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y/%m/%d %H:%M')
-        return agenda
+        return agendad
     
     def player(self):
         try:
@@ -68,9 +70,7 @@ class MainHandler(AppHandler):
 class BioHandler(AppHandler):
     def get(self):
         bio = models.Biography.all().get()
-        self.renderjson('bio.html', {
-            'bio': markdown2.markdown(bio.text)
-        })
+        self.renderjson('bio.html', utils.to_dict(bio))
 
 
 class MusicHandler(AppHandler):
@@ -107,7 +107,27 @@ class MusicHandler(AppHandler):
 
 class TextHandler(AppHandler):
     def get(self, id):
-        pass
+        id = int(id or 0)
+        try:
+            self.q = models.Album.gql('WHERE title = :1', 'Tomber les Masques').get().song_set
+            self.q.order('track')
+            data = {
+                'texts': utils.to_dicts(self.q),
+                'text': self.text(id)
+            }
+        except AttributeError:
+            data = {'songs': [], 'song': {}}
+        self.renderjson('texts.html', data)
+    
+    def text(self, id):
+        if not id:
+            song = self.q.get()
+        else:
+            song = models.Song.get_by_id(id)
+        songd = utils.to_dict(song)
+        songd['album'] = song.album.title
+        songd['mp3'] = serve_url % songd['mp3']
+        return songd
 
 
 class MediaHandler(AppHandler):
@@ -194,7 +214,6 @@ class PresseHandler(AppHandler):
         else:
             item = self.m.get_by_id(id)
         itemd = utils.to_dict(item)
-        itemd['text'] = markdown2.markdown(itemd['text'])
         key = itemd['img']
         itemd['img'] = images.get_serving_url(key, 200)
         itemd['img_big'] = images.get_serving_url(key, 1024)
@@ -233,10 +252,9 @@ class NewsletterHandler(AppHandler):
 
 class GuestbookHandler(AppHandler):
     def get(self):
-        mess = models.Guestbook.all().fetch(10)
+        mess = models.Guestbook.all().fetch(100)
         messd = utils.to_dicts(mess)
-        for m in messd:
-            m['text'] = markdown2.markdown(m['text'])
+        messd = sorted(messd, lambda x,y: cmp(x['id'], y['id']), reverse=True)
         self.renderjson('guestbook.html', {
             'mess': messd
         })

@@ -4,6 +4,7 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: normal;}
 /* tags */
 ul {list-style-type: none;}
 img, a {border: none; outline: 0;}
+p {color: #bbb; font-size: 12px; line-height: 1.5em;}
 
 /* links */
 a {color: #fff; text-decoration: none;}
@@ -15,7 +16,7 @@ textarea {height: 200px;}
 input:focus, textarea:focus {background: #fff;}
 
 /* structure */
-body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; overflow: hidden;}
+body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; min-width: 800px; overflow-x: hidden;}
 
 #home {left: 0px; position: absolute; right: 0px; top: 0px;}
 
@@ -35,6 +36,9 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 .aside h1 {font-size: 18px; margin: -10px 0 10px 0;}
 #musique {left: 0px; text-align: center; top: 0px; width: 300px;}
 
+#player {background-color: transparent; height: 100px; width: 200px;
+		border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px;}
+
 #newsletter {margin: 10px auto;}
 #newsletter input {display: inline; width: 150px;}
 
@@ -50,15 +54,15 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
 #back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
 
-p {color: #bbb; font-size: 12px; line-height: 1.5em;}
-
 /* pages */
 #pages {display: none; padding: 20px;}
 #page_menu {height: 40px; margin: 0 0 20px 0; text-align: center;}
 #page_menu li {display: inline; margin: 0 10px;}
 .pages-background {background: #000 url() no-repeat scroll 0px 0px; display: none; opacity: 0.6; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -10;}
-#pages .menu {float: left; width: 100px;}
-#pages .view {margin-left: 100px;}
+#pages .menu {float: left; width: 120px;}
+#pages .view {margin-left: 130px;}
+#pages .view h1 {font-size: 24px;}
+#pages .view h2 {color: #ccc; font-size: 16px;}
 
 #bio {font-size: 14px; position: absolute; right: 20px; top: 50px; width: 700px;}
 #bio-background {background-image: url(/static/front/img/pages/tripin.jpg); background-position: -200px 0px;}
@@ -66,16 +70,19 @@ p {color: #bbb; font-size: 12px; line-height: 1.5em;}
 #albums {float: left; width: 100px;}
 #album {margin-left: 120px;}
 #album img {float: left; margin: 0 10px;}
-#album h1 {font-size: 24px; margin: 0 0 10px 0;}
+#album h1 {margin: 0 0 10px 0;}
 #album ul {margin-left: 330px;}
 #music-background {background-image: url(/static/front/img/pages/peur.jpg); background-position: top right;}
 
-#choice {background-color: #222; height: 110px; margin: 0 auto; text-align: center; width: 360px; border-radius: 30px;}
+#text h1 {font-size: 20px;}
+#text h2 {color: #ccc; font-size: 18px;}
+#text-background {background-image: url(/static/front/img/pages/cover.jpg); background-position: top right; right: -200px;}
+
+#choice {margin: 0 auto; text-align: center; width: 360px;}
 #choice a {color: #ccc; display: block; float: left; margin: 16px 0; height: 65px; width: 120px;}
 #choice span {display: none;}
 #choice img {height: 65px;}
 
-#photo h1 {font-size: 1.5em;}
 #photo h2 {display: inline;}
 #photo h3 {display: inline;}
 #photo div {margin-top: 20px;}
@@ -87,7 +94,7 @@ p {color: #bbb; font-size: 12px; line-height: 1.5em;}
 #presse-background {background-image: url(/static/front/img/pages/colere.jpg); background-position: top right; right: 0px}
 
 #guestbook {margin: 0 auto; width: 500px;}
-#guestbook div {}
+#guestbook div {margin: 20px 0;}
 #guestbook-background {background-image: url(/static/front/img/pages/rideau.jpg); background-position: top center; opacity: 0.4;}
 
 

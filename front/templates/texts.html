@@ -1,0 +1,18 @@
+<ul id="texts" class="menu">
+{{#texts}}
+	<li><a href="#/texts/{{id}}">{{title}}</a></li>
+{{/texts}}
+</ul>
+
+<div id="text" class="view">
+{{#text}}
+	<h1>{{title}}</h1>
+	<h2>{{album}}</h2>
+	{{{lyrics}}}
+{{/text}}
+{{^text}}
+	Pas de texte disponible
+{{/text}}
+</div>
+
+<div id="text-background" class="pages-background"></div>

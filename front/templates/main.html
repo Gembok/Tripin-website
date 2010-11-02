@@ -32,12 +32,10 @@
 		</div>
 	
 		<div id="musique" class="aside">
-			<div id="player">
-				<object type="application/x-shockwave-flash" data="/static/player_multi.swf" width="200" height="100">
-				    <param name="movie" value="player_multi.swf" />
-				    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
-				</object>
-			</div>
+			<object type="application/x-shockwave-flash" data="/static/player_multi.swf" id="player">
+			    <param name="movie" value="player_multi.swf" />
+			    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
+			</object>
 			
 			<form action="/newsletter" method="get" id="newsletter">
 				<input type="text" name="email" placeholder='email' />
