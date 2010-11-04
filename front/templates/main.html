@@ -31,11 +31,12 @@
 			{{/contacts}}
 		</div>
 	
-		<div id="musique" class="aside">
-			<object type="application/x-shockwave-flash" data="/static/player_multi.swf" id="player">
-			    <param name="movie" value="player_multi.swf" />
-			    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
-			</object>
+		<div id="sidebar" class="aside">
+			<ul id="links">
+			{{#links}}
+				<li><a href="{{link}}">{{title}}</a></li>
+			{{/links}}
+			</ul>
 			
 			<form action="/newsletter" method="get" id="newsletter">
 				<input type="text" name="email" placeholder='email' />
@@ -63,22 +64,35 @@
 			</li>
 			{{/agenda}}
 		</ul>
-	
+		
+		<div id="webmaster">Website par <a href="http://damienfir.github.com">Damien Firmenich</a></div>
+		
+		<div id="logos">
+			<img src="/static/front/img/logos/loterie.jpg">
+			<img src="/static/front/img/logos/fcma.jpg">
+		</div>
+		
 		<div id="back-left" class="background"></div>
 		<div id="back-right" class="background"></div>
 	</div>
 	
 	<div id="pages">
+		<a href="#/" id="retour">&larr; Retour</a>
+		
 		<ul id="page_menu">
 			<li><a href="#/bio">Biographie</a></li>
 			<li><a href="#/music">Musique</a></li>
 			<li><a href="#/texts">Textes</a></li>
 			<li><a href="#/media">Media</a></li>
-			<li><a href="#/">Retour</a></li>
 		</ul>
 	
 		<div id="page"></div>
 	</div>
+	
+	<object type="application/x-shockwave-flash" data="/static/player_multi.swf" id="player">
+	    <param name="movie" value="player_multi.swf" />
+	    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
+	</object>
 	
 	<script src="/static/front/js/ext/jquery-1.4.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/front/js/ext/jquery.hashlisten.js" type="text/javascript" charset="utf-8"></script>

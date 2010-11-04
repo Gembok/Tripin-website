@@ -41,7 +41,8 @@ class MainHandler(AppHandler):
             'test': 'ok',
             'contacts': self.contact(),
             'agenda': self.agenda(),
-            'player': self.player()
+            'player': self.player(),
+            'links': self.links()
         })
     
     def contact(self):
@@ -65,6 +66,10 @@ class MainHandler(AppHandler):
             'title': '|'.join([s.title for s in songs])
         }
         return urllib.urlencode(data).replace('%3D','=')
+    
+    def links(self):
+        links = models.Lien.all().fetch(10)
+        return utils.to_dicts(links)
 
 
 class BioHandler(AppHandler):
@@ -87,7 +92,7 @@ class MusicHandler(AppHandler):
         albums = utils.to_dicts(albums)
         for item in albums:
             item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y')
-            item['artwork'] = images.get_serving_url(item['artwork'], 90)
+            item['artwork'] = images.get_serving_url(item['artwork'], 104, crop=True)
         return albums
     
     def album(self, id):
