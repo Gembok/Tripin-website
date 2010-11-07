@@ -15,31 +15,32 @@ input, textarea {border: 0; display: block; font-size: 14px; margin: 5px; outlin
 textarea {height: 200px;}
 
 
-/* structure */
+/* main content */
 body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida Sans Unicode", sans-serif; min-width: 800px; overflow-x: hidden;}
 
-#home {left: 0px; position: absolute; right: 0px; top: 0px;}
+#content {margin: 0 auto; text-align: center; width: 600px; z-index: 1;}
 
-#content {margin: 0 auto; position: relative; text-align: center; width: 500px; z-index: 1;}
+#title {background: #000 url(/static/front/img/title.png) no-repeat scroll top center; border-bottom: 1px solid #fff; height: 141px; margin: 20px auto; width: 600px;}
 
-#title {background-image: url(/static/front/img/title.png); height: 141px; margin: 20px auto; width: 300px;}
+#menu {margin: -42px 0 0 0;}
+#menu li {float: left; font-size: 16px; margin-right: 20px;}
 
-#menu {border-top: 1px solid #fff; margin-top: -20px; padding: 50px 0;}
-#menu li {font-size: 20px; padding-bottom: 10px;}
+#page {margin: 70px 0 20px 0;}
 
-#contact {margin-top: 20px; text-align: left;}
+#contact {border-top: 1px solid #fff; text-align: left;}
 #contact li {float: left; margin: 10px 10px; width: 45%;}
 #contact span, #contact a {color: #ccc; display: block; font-size: 12px;}
 #contact a:hover {color: #fff;}
 #contact .title {color: inherit; font-size: 18px;}
 
-.aside {color: #eee; position: absolute; z-index: 20;}
+/* sidebars */
+.aside {color: #eee; height: 800px; overflow: hide; position: absolute; z-index: 20;}
 .aside h1 {font-size: 18px; margin: 5px 5px 10px 0;}
 .aside a:hover {color: #ddd;}
 
-#sidebar {left: 0px; text-align: center; top: 130px; width: 300px;}
+#sidebar {background: #000 url(/static/front/img/rideaux-left.png) no-repeat scroll -265px 0px; left: 0; text-align: center; top: 0; width: 250px;}
 
-#player {background-color: transparent; height: 100px; left: 50px; margin: 5px 0; position: absolute; top: 20px; width: 200px; z-index: 25;
+#player {background-color: transparent; height: 100px; margin: 5px 0; width: 200px;
 		border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px;}
 
 #links li {margin: 5px 0;}
@@ -49,37 +50,26 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 #guestbook_form {display: none; margin: 10px auto; width: 200px;}
 
-#agenda {right: 0px; top: 0px; width: 270px;}
+#webmaster {bottom: 0; color: #666; font-size: 12px; left: 20px; position: absolute;}
+#webmaster a {color: #aaa;}
+#webmaster a:hover {color: #fff;}
+
+
+#agenda {background: #000 url(/static/front/img/rideaux-right.png) no-repeat scroll 0px 0px; right: 0px; top: 0px; width: 250px;}
 #agenda li {margin: 10px 0; text-align: center;}
 #agenda h1 {text-align: right;}
 #agenda .place {font-size: 18px; display: block;}
 #agenda .title, #agenda .date {color: #ccc; display: block; font-size: 14px;}
 
-#webmaster {color: #666; font-size: 12px; left: 40px; position: absolute; top: 760px; z-index: 19;}
-#webmaster a {color: #aaa;}
-#webmaster a:hover {color: #fff;}
-
 #logos {opacity: 0.5; position: absolute; right: 20px; top: 640px; z-index: 19;}
 #logos img {display: block; margin: 5px 0;}
 
-.background {height: 800px; position: absolute; top: 0; z-index: 10;}
-#back-left {background-image: url(/static/front/img/rideaux-left.png); left: -200px; width: 514px;}
-#back-right {background-image: url(/static/front/img/rideaux-right.png); right: -200px; width: 501px;}
 
 /* pages */
-#pages {background: #000; bottom: 0; display: none; left: 0; padding: 20px; position: absolute; right: 0; top: 0; z-index: 30;}
-#page_menu {height: 40px; margin: 0 0 20px 0; text-align: center;}
-#page_menu li {display: inline; margin: 0 10px;}
-#retour {left: 10px; position: absolute; top: 20px;}
-.pages-background {background: #000 url() no-repeat scroll 0px 0px; display: none; opacity: 0.6; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -10;}
-#pages .menu {float: left; width: 150px;}
-#pages .menu li {margin: 10px 0;}
-#pages .view {margin-left: 160px;}
-#pages .view h1 {font-size: 24px;}
-#pages .view h2 {color: #ccc; font-size: 16px;}
+#page .view {margin-left: 160px;}
+#page .view h1 {font-size: 24px;}
+#page .view h2 {color: #ccc; font-size: 16px;}
 
-#bio {font-size: 14px; position: absolute; right: 20px; top: 50px; width: 700px;}
-#bio-background {background-image: url(/static/front/img/pages/tripin.jpg); background-position: -200px 0px;}
 
 #albums {float: left; width: 100px;}
 #album {margin-left: 120px;}

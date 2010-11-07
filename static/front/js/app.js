@@ -39,35 +39,10 @@ $.hashListen('/:action/([0-9]+)/?', function(action, id) {
 
 function fill(data, top) {
 	var html = Mustache.to_html(data.template, data.data);
-	
-	function fill() {
+		
+	$('#page').fadeOut(300, function() {
 		$('#page').html(html);
-	}
-	
-	if ($('#pages').css('display') == 'none') {
-		$('#home').fadeOut(300, function() {
-			fill();
-			$('#pages').fadeIn(300, function() {
-				$('.pages-background').fadeIn(300);
-			});
-		});
-	} else {
-		$('.pages-background').fadeOut(200, function() {
-			$('#page').fadeOut(200, function() {
-				fill();
-				$(this).fadeIn(200, function() {
-					$('.pages-background').fadeIn(200);
-				});
-			});
-		});
-	}
-}
-
-function fadeBack() {
-	$('.pages-background').fadeOut(200, function() {
-		$('#pages').fadeOut(200, function() {
-			$('#home').fadeIn(200);
-		});
+		$('#page').fadeIn(300);
 	});
 }
 

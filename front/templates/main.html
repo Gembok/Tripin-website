@@ -8,91 +8,87 @@
 	<link rel="stylesheet" href="/static/front/css/jquery.lightbox-0.5.css" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
-	<div id="home">
-		<div id="content">
-			<div id="title"></div>
-			
-			<ul id="menu">
-				<li><a href="#/bio">Biographie</a></li>
-				<li><a href="#/music">Musique</a></li>
-				<li><a href="#/texts">Textes</a></li>
-				<li><a href="#/media">Media</a></li>
-			</ul>
+	<div id="content">
+		<div id="title"></div>
 		
-			{{#contacts}}
-			<ul id="contact">
-				<li>
-					<span class="title">{{title}}</span>
-					<span class="name">{{name}}</span>
-					<span class="phone">{{phone}}</span>
-					<a href="mailto:{{email}}" class="email">{{email}}</a>
-				</li>			
-			</ul>
-			{{/contacts}}
-		</div>
-	
-		<div id="sidebar" class="aside">
-			<ul id="links">
-			{{#links}}
-				<li><a href="{{link}}">{{title}}</a></li>
-			{{/links}}
-			</ul>
-			
-			<form action="/newsletter" method="get" id="newsletter">
-				<input type="text" name="email" placeholder='email' />
-				<button type="submit">S'inscrire &agrave; la newsletter</button>
-				<span id="confirm"></span>
-			</form>
-			
-			<a href="#/guestbook/new" id="guestbook_link">Laissez-nous un message</a>
-			<a href="#/guestbook" class="small block">Voir tous les messages</a>
-			<form action="guestbook" id="guestbook_form" method="post">
-				<input type="text" name="name" placeholder="Nom">
-				<textarea name="text"></textarea>
-				<button type="submit">Envoyer</button>
-			</form>
-		</div>
-		
-		<ul id="agenda" class="aside">
-			<h1>Agenda</h1>
-		
-			{{#agenda}}
-			<li>
-				<span class="place">{{place}}</span>
-				<span class="title">{{title}}</span>
-				<span class="date">{{date}}</span>
-			</li>
-			{{/agenda}}
-		</ul>
-		
-		<div id="webmaster">Website par <a href="http://damienfir.github.com">Damien Firmenich</a></div>
-		
-		<div id="logos">
-			<img src="/static/front/img/logos/loterie.jpg">
-			<img src="/static/front/img/logos/fcma.jpg">
-		</div>
-		
-		<div id="back-left" class="background"></div>
-		<div id="back-right" class="background"></div>
-	</div>
-	
-	<div id="pages">
-		<a href="#/" id="retour">&larr; Retour</a>
-		
-		<ul id="page_menu">
+		<ul id="menu">
 			<li><a href="#/bio">Biographie</a></li>
 			<li><a href="#/music">Musique</a></li>
 			<li><a href="#/texts">Textes</a></li>
 			<li><a href="#/media">Media</a></li>
 		</ul>
+		
+		<!-- main content -->
+		<div id="page">
+			a
+			{{#news}}
+				<h1>{{title}}</h1>
+				{{text}}
+			{{/news}}
+		</div>
 	
-		<div id="page"></div>
+		{{#contacts}}
+		<ul id="contact">
+			<li>
+				<span class="title">{{title}}</span>
+				<span class="name">{{name}}</span>
+				<span class="phone">{{phone}}</span>
+				<a href="mailto:{{email}}" class="email">{{email}}</a>
+			</li>			
+		</ul>
+		{{/contacts}}
 	</div>
 	
-	<object type="application/x-shockwave-flash" data="/static/player_multi.swf" id="player">
-	    <param name="movie" value="player_multi.swf" />
-	    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
-	</object>
+	<!-- player & aside -->
+	<div id="sidebar" class="aside">
+		<object type="application/x-shockwave-flash" data="/static/player_multi.swf" id="player">
+		    <param name="movie" value="player_multi.swf" />
+		    <param name="FlashVars" value="{{{player}}}&amp;config=/static/front/player.txt" />
+		</object>
+		
+		<ul id="links">
+		{{#links}}
+			<li><a href="{{link}}">{{title}}</a></li>
+		{{/links}}
+		</ul>
+		
+		<form action="/newsletter" method="get" id="newsletter">
+			<input type="text" name="email" placeholder='email' />
+			<button type="submit">S'inscrire &agrave; la newsletter</button>
+			<span id="confirm"></span>
+		</form>
+		
+		<a href="#/guestbook/new" id="guestbook_link">Laissez-nous un message</a>
+		<a href="#/guestbook" class="small block">Voir tous les messages</a>
+		<form action="guestbook" id="guestbook_form" method="post">
+			<input type="text" name="name" placeholder="Nom">
+			<textarea name="text"></textarea>
+			<button type="submit">Envoyer</button>
+		</form>
+		
+		<div id="webmaster">Website par <a href="http://damienfir.github.com">Damien Firmenich</a></div>
+	</div>
+	
+	<!-- agenda -->
+	<div id="agenda" class="aside">
+		<h1>Agenda</h1>
+		
+		<ul>
+		{{#agenda}}
+			<li>
+				<span class="place">{{place}}</span>
+				<span class="title">{{title}}</span>
+				<span class="date">{{date}}</span>
+			</li>
+		{{/agenda}}
+		</ul>
+		
+		<div id="logos">
+			<img src="/static/front/img/logos/loterie.jpg">
+			<img src="/static/front/img/logos/fcma.jpg">
+		</div>
+	</ul>
+	
 	
 	<script src="/static/front/js/ext/jquery-1.4.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/front/js/ext/jquery.hashlisten.js" type="text/javascript" charset="utf-8"></script>
