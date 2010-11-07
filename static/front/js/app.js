@@ -39,7 +39,6 @@ $.hashListen('/:action/([0-9]+)/?', function(action, id) {
 
 function fill(data, top) {
 	var html = Mustache.to_html(data.template, data.data);
-	console.log(data);
 	
 	function fill() {
 		$('#page').html(html);
@@ -82,14 +81,13 @@ function newsletter() {
 		type: 'GET',
 		format: 'text',
 		success: function(data) {
-			console.log(data);
 			var conf = $('#confirm');
 			if (data.confirm == 0) {
 				var mess = 'not subbmitted';
 			} else if(data.confirm == 2) {
 				var mess = 'already subscribed';
 			} else {
-				var mess = 'ok';
+				var mess = 'inscrit !';
 			}
 			conf.html(mess);
 		}
@@ -107,11 +105,10 @@ function guestbook() {
 		type: 'POST',
 		format: 'text',
 		success: function(data) {
-			if (data == '1') {
-				window.location = '#/guestbook';
-			} else {
-				console.log('error');
-			}
+			// if (data == '1') {
+			// 	window.location = '#/guestbook';
+			// }
+			window.location = '#/guestbook';
 		}
 	});
 	

@@ -100,6 +100,8 @@ class MusicHandler(AppHandler):
             album = self.m.all().get()
         else:
             album = self.m.get_by_id(id)
+        if not album:
+            return False
         albumd = utils.to_dict(album)
         albumd['artwork'] = images.get_serving_url(albumd['artwork'], 320)
         albumd['songs'] = self.songs(album)
@@ -121,7 +123,7 @@ class TextHandler(AppHandler):
                 'text': self.text(id)
             }
         except AttributeError:
-            data = {'songs': [], 'song': {}}
+            data = {'songs': [], 'song': False}
         self.renderjson('texts.html', data)
     
     def text(self, id):
@@ -162,6 +164,8 @@ class PhotosHandler(AppHandler):
             photo = self.m.all().get()
         else:
             photo = self.m.get_by_id(id)
+        if not photo:
+            return False
         photod = utils.to_dict(photo)
         photod['concert'] = photo.concert.title
         for i in range(len(photod['photos'])):
@@ -193,6 +197,8 @@ class VideosHandler(AppHandler):
             video = self.m.all().get()
         else:
             video = self.m.get_by_id(id)
+        if not video:
+            return False
         return utils.to_dict(video)
 
 
@@ -218,6 +224,8 @@ class PresseHandler(AppHandler):
             item = self.m.all().get()
         else:
             item = self.m.get_by_id(id)
+        if not item:
+            return False
         itemd = utils.to_dict(item)
         key = itemd['img']
         itemd['img'] = images.get_serving_url(key, 200)
@@ -258,8 +266,11 @@ class NewsletterHandler(AppHandler):
 class GuestbookHandler(AppHandler):
     def get(self):
         mess = models.Guestbook.all().fetch(100)
-        messd = utils.to_dicts(mess)
-        messd = sorted(messd, lambda x,y: cmp(x['id'], y['id']), reverse=True)
+        if mess:
+            messd = utils.to_dicts(mess)
+            messd = sorted(messd, lambda x,y: cmp(x['id'], y['id']), reverse=True)
+        else:
+            messd = {}
         self.renderjson('guestbook.html', {
             'mess': messd
         })
