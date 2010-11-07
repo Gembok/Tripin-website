@@ -12,6 +12,7 @@
 		<div id="title"></div>
 		
 		<ul id="menu">
+			<li><a href="#/home">Home</a></li>
 			<li><a href="#/bio">Biographie</a></li>
 			<li><a href="#/music">Musique</a></li>
 			<li><a href="#/texts">Textes</a></li>
@@ -25,18 +26,17 @@
 				<h1>{{title}}</h1>
 				{{text}}
 			{{/news}}
-		</div>
-	
-		{{#contacts}}
-		<ul id="contact">
-			<li>
-				<span class="title">{{title}}</span>
-				<span class="name">{{name}}</span>
-				<span class="phone">{{phone}}</span>
-				<a href="mailto:{{email}}" class="email">{{email}}</a>
-			</li>			
-		</ul>
-		{{/contacts}}
+			
+			{{#contacts}}
+			<ul id="contact">
+				<li>
+					<span class="title">{{title}}</span>
+					<span class="name">{{name}}</span>
+					<span class="phone">{{phone}}</span>
+					<a href="mailto:{{email}}" class="email">{{email}}</a>
+				</li>			
+			</ul>
+			{{/contacts}}
 	</div>
 	
 	<!-- player & aside -->

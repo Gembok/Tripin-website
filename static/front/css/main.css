@@ -25,27 +25,27 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #menu {margin: -42px 0 0 0;}
 #menu li {float: left; font-size: 16px; margin-right: 20px;}
 
-#page {margin: 70px 0 20px 0;}
+#page {margin: 60px 0 0 0;}
 
-#contact {border-top: 1px solid #fff; text-align: left;}
+#contact {border-top: 1px solid #fff; margin-top: 20px; text-align: left;}
 #contact li {float: left; margin: 10px 10px; width: 45%;}
 #contact span, #contact a {color: #ccc; display: block; font-size: 12px;}
 #contact a:hover {color: #fff;}
 #contact .title {color: inherit; font-size: 18px;}
 
 /* sidebars */
-.aside {color: #eee; height: 800px; overflow: hide; position: absolute; z-index: 20;}
+.aside {color: #eee; height: 800px; overflow: hide; position: fixed; z-index: 20;}
 .aside h1 {font-size: 18px; margin: 5px 5px 10px 0;}
 .aside a:hover {color: #ddd;}
 
 #sidebar {background: #000 url(/static/front/img/rideaux-left.png) no-repeat scroll -265px 0px; left: 0; text-align: center; top: 0; width: 250px;}
 
-#player {background-color: transparent; height: 100px; margin: 5px 0; width: 200px;
+#player {background-color: transparent; height: 100px; margin: 15px 0; width: 200px;
 		border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px;}
 
 #links li {margin: 5px 0;}
 
-#newsletter {margin: 10px auto;}
+#newsletter {margin-top: 10px;}
 #newsletter input {display: inline; width: 150px;}
 
 #guestbook_form {display: none; margin: 10px auto; width: 200px;}
@@ -66,17 +66,16 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 
 /* pages */
-#page .view {margin-left: 160px;}
+#page .menu {float: left; width: 100px;}
+#page .view {margin-left: 110px;}
 #page .view h1 {font-size: 24px;}
 #page .view h2 {color: #ccc; font-size: 16px;}
 
+#bio {text-align: left;}
 
-#albums {float: left; width: 100px;}
-#album {margin-left: 120px;}
 #album img {float: left; margin: 0 10px;}
 #album h1 {margin: 0 0 10px 0;}
 #album ul {margin-left: 330px;}
-#music-background {background-image: url(/static/front/img/pages/peur.jpg); background-position: top right;}
 
 #text h1 {font-size: 20px;}
 #text h2 {color: #ccc; font-size: 18px;}
