@@ -88,7 +88,7 @@ class MusicHandler(AppHandler):
         })
     
     def albums(self):
-        albums = self.m.all().fetch(10)
+        albums = self.m.all().fetch(5)
         albums = utils.to_dicts(albums)
         for item in albums:
             item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y')
@@ -103,7 +103,7 @@ class MusicHandler(AppHandler):
         if not album:
             return False
         albumd = utils.to_dict(album)
-        albumd['artwork'] = images.get_serving_url(albumd['artwork'], 320)
+        albumd['artwork'] = images.get_serving_url(albumd['artwork'], 200)
         albumd['songs'] = self.songs(album)
         return albumd
     

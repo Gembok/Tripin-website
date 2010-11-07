@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: normal;}
 /* tags */
 ul {list-style-type: none;}
 img, a {border: none; outline: 0;}
-p {color: #bbb; font-size: 12px; line-height: 1.5em;}
+p {color: #bbb; font-size: 12px; line-height: 1.5em; text-align: left;}
 
 /* links */
 a {color: #fff; text-decoration: none;}
@@ -66,20 +66,20 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 
 /* pages */
-#page .menu {float: left; width: 100px;}
-#page .view {margin-left: 110px;}
-#page .view h1 {font-size: 24px;}
-#page .view h2 {color: #ccc; font-size: 16px;}
+#page {text-align: left;}
+#page .nav {margin: 0 0 20px 0;}
+#page .nav li {float: left; margin: 0 10px 0 0;}
+#page .menu {float: left; width: 150px;}
+#page .below {clear: left; padding: 10px 0;}
+#page .side {margin-left: 160px;}
+#page h1 {font-size: 24px; margin: 0 0 5px 0;}
+#page h2 {color: #ccc; font-size: 14px;}
 
-#bio {text-align: left;}
-
-#album img {float: left; margin: 0 10px;}
-#album h1 {margin: 0 0 10px 0;}
-#album ul {margin-left: 330px;}
+#album img {float: left; margin: 0 15px 0 0;}
+#album ul {margin-left: 215px;}
 
 #text h1 {font-size: 20px;}
 #text h2 {color: #ccc; font-size: 18px;}
-#text-background {background-image: url(/static/front/img/pages/cover.jpg); background-position: top right; right: -200px;}
 
 #choice {margin: 0 auto; text-align: center; width: 360px;}
 #choice a {color: #ccc; display: block; float: left; margin: 16px 0; height: 65px; width: 120px;}
@@ -90,15 +90,9 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #photo h3 {display: inline;}
 #photo div {margin-top: 20px;}
 #photo a {display: block; float: left; margin: 0 10px 5px 0;}
-#photo-background {background-image: url(/static/front/img/pages/joie.jpg); background-position: top right; right: -350px;}
-
-#video-background {background-image: url(/static/front/img/pages/surprise.jpg); background-position: top right;}
-
-#presse-background {background-image: url(/static/front/img/pages/colere.jpg); background-position: top right; right: 0px}
 
 #guestbook {margin: 0 auto; width: 500px;}
 #guestbook div {margin: 20px 0;}
-#guestbook-background {background-image: url(/static/front/img/pages/rideau.jpg); background-position: top center; opacity: 0.4;}
 
 
 /* generic classes */
