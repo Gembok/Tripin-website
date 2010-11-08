@@ -1,15 +1,24 @@
 {{#news}}
 	<h1>{{title}}</h1>
-	{{text}}
+	{{{text}}}
 {{/news}}
 
-{{#contacts}}
 <ul id="contact">
+{{#contacts}}
 	<li>
 		<span class="title">{{title}}</span>
 		<span class="name">{{name}}</span>
 		<span class="phone">{{phone}}</span>
 		<a href="mailto:{{email}}" class="email">{{email}}</a>
 	</li>			
-</ul>
 {{/contacts}}
+{{#ressources}}
+	<li class="ressource">
+		<span class="title">{{title}}</span>
+		<a href="/serve/{{presskit}}">Pressekit</a>
+		<a href="/serve/{{tech}}">Fiche technique</a>
+		<a href="/serve/{{scene}}">Plan de sc&egrave;ne</a>
+		<a href="/serve/{{photos}}">Photos</a>
+	</li>
+{{/ressources}}
+</ul>

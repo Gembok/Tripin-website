@@ -1,4 +1,6 @@
 $(function() {
+	window.location.hash = '#/home';
+	
 	$('#media-photos').live('mouseenter', function() { $('span#photos').fadeIn(200);});
 	$('#media-photos').live('mouseleave', function() { $('span#photos').fadeOut(300);});
 
@@ -16,7 +18,7 @@ $(function() {
 });
 
 $.hashListen('/', function() {
-	fadeBack();
+	window.location.hash = '#/home';
 });
 
 $.hashListen('/:action/?', function(action) {
@@ -39,7 +41,7 @@ $.hashListen('/:action/([0-9]+)/?', function(action, id) {
 
 function fill(data, top) {
 	var html = Mustache.to_html(data.template, data.data);
-		
+	
 	$('#page').fadeOut(300, function() {
 		$('#page').html(html);
 		$('#page').fadeIn(300);
@@ -58,7 +60,7 @@ function newsletter() {
 		success: function(data) {
 			var conf = $('#confirm');
 			if (data.confirm == 0) {
-				var mess = 'not subbmitted';
+				var mess = 'not submitted';
 			} else if(data.confirm == 2) {
 				var mess = 'already subscribed';
 			} else {
@@ -80,9 +82,6 @@ function guestbook() {
 		type: 'POST',
 		format: 'text',
 		success: function(data) {
-			// if (data == '1') {
-			// 	window.location = '#/guestbook';
-			// }
 			window.location = '#/guestbook';
 		}
 	});

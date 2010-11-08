@@ -4,7 +4,7 @@
 <ul>
 {% for ref in refs %}
 	<li>
-		<a href="/admin/edit/{{model}}/?id={{ref.id}}&parent={{parent}}&parent_id={{parent_id}}">{{ ref }}</a> - <a href="/admin/delete/{{model}}/?id={{ref.id}}">Delete</a>
+		<a href="/admin/edit/{{model}}/?id={{ref.id}}&parent={{parent}}&parent_id={{parent_id}}">{{ ref.id }}</a> - <a href="/admin/delete/{{model}}/?id={{ref.id}}">Delete</a>
 	</li>
 {% endfor %}
 </ul>

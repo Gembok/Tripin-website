@@ -38,15 +38,10 @@ class AppHandler(webapp.RequestHandler):
 class MainHandler(AppHandler):
     def get(self):
         self.render('main.html', {
-            'test': 'ok',
-            'contacts': self.contact(),
             'agenda': self.agenda(),
             'player': self.player(),
             'links': self.links()
         })
-    
-    def contact(self):
-        return models.Contact.all().fetch(10)
     
     def agenda(self):
         agenda = models.Agenda.all().filter('date >=', datetime.now()).fetch(100)
@@ -70,6 +65,27 @@ class MainHandler(AppHandler):
     def links(self):
         links = models.Lien.all().fetch(10)
         return utils.to_dicts(links)
+
+
+class HomeHandler(AppHandler):
+    def get(self):
+        self.renderjson('home.html', {
+            'news': self.news(),
+            'contacts': self.contacts(),
+            'ressources': self.ressources()
+        })
+    
+    def news(self):
+        news = models.News.all().get()
+        return utils.to_dict(news)
+        
+    def contacts(self):
+        contacts = models.Contact.all().fetch(10)
+        return utils.to_dicts(contacts)
+    
+    def ressources(self):
+        res = models.Ressources.all().fetch(5)
+        return utils.to_dicts(res)
 
 
 class BioHandler(AppHandler):
@@ -295,5 +311,6 @@ routes = [
     (r'^/media/?', MediaHandler),
     (r'^/newsletter/?(\w+)?/?', NewsletterHandler),
     (r'^/guestbook/?', GuestbookHandler),
+    (r'^/home/?', HomeHandler),
     (r'^/', MainHandler)
 ]

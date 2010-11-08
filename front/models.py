@@ -77,3 +77,7 @@ class Ressources(db.Model):
     tech = blobstore.BlobReferenceProperty('Fiche Technique')
     scene = blobstore.BlobReferenceProperty('Plan de scene')
     photos = blobstore.BlobReferenceProperty('Photos')
+
+class News(db.Model):
+    title = db.StringProperty('Titre')
+    text = db.TextProperty('Texte')

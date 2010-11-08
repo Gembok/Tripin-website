@@ -44,11 +44,3 @@ def to_dicts_list(models, keys):
             it['fields'].append(d[key])
         data.append(it)
     return data
-
-# def serving_url(val, size, crop):
-#     info = blobstore.BlobInfo.get(val)
-#     try:
-#         info.content_type.index('image')
-#         return images.get_serving_url(str(val), size, crop)
-#     except ValueError:
-#         return '/serve/%s' % str(val)

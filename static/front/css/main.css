@@ -27,11 +27,6 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 #page {margin: 60px 0 0 0;}
 
-#contact {border-top: 1px solid #fff; margin-top: 20px; text-align: left;}
-#contact li {float: left; margin: 10px 10px; width: 45%;}
-#contact span, #contact a {color: #ccc; display: block; font-size: 12px;}
-#contact a:hover {color: #fff;}
-#contact .title {color: inherit; font-size: 18px;}
 
 /* sidebars */
 .aside {color: #eee; height: 800px; overflow: hide; position: fixed; z-index: 20;}
@@ -74,6 +69,12 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #page .side {margin-left: 160px;}
 #page h1 {font-size: 24px; margin: 0 0 5px 0;}
 #page h2 {color: #ccc; font-size: 14px;}
+
+#contact {border-top: 1px solid #fff; margin-top: 20px; padding: 10px 0; text-align: left;}
+#contact li {float: left; margin: 0 10px 10px 0; width: 45%;}
+#contact span, #contact a {color: #ccc; display: block; font-size: 12px;}
+#contact a:hover {color: #a8332f;}
+#contact .title {color: inherit; font-size: 18px;}
 
 #album img {float: left; margin: 0 15px 0 0;}
 #album ul {margin-left: 215px;}

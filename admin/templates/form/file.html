@@ -2,6 +2,6 @@
 	<label for="{{name}}">{{title}}</label>
 	<input type="file" name="{{name}}"><br />
 	{% if key %}
-		<a href="{{url}}">{{key}}</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{key}}">delete</a>
+		<a href="{{url}}">view</a> - <a href="/admin/deleteblob/{{model}}/?id={{id}}&key={{key}}">delete</a>
 	{% endif %}
 </p>
