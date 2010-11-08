@@ -1,14 +1,17 @@
 $(function() {
 	window.location.hash = '#/home';
 	
-	$('#media-photos').live('mouseenter', function() { $('span#photos').fadeIn(200);});
-	$('#media-photos').live('mouseleave', function() { $('span#photos').fadeOut(300);});
-
-	$('#media-videos').live('mouseenter', function() { $('span#videos').fadeIn(200);});
-	$('#media-videos').live('mouseleave', function() { $('span#videos').fadeOut(300);});
-
-	$('#media-presse').live('mouseenter', function() { $('span#presse').fadeIn(200);});
-	$('#media-presse').live('mouseleave', function() { $('span#presse').fadeOut(300);});
+	var media = ['photos', 'videos', 'presse'];
+	
+	for (x in media) {
+		var med = media[x];
+		var logo = $('#media-'+med);
+		var text = $('span#'+med);
+		logo.live('mouseenter', function() { text.fadeIn(200);});
+		logo.live('mouseleave', function() { text.fadeOut(300);});
+	}
+	
+	$('#agenda li').click(agenda);
 	
 	// $(".gallery").live('click', function(){ $(this).fancybox(); });
 	
@@ -46,6 +49,11 @@ function fill(data, top) {
 		$('#page').html(html);
 		$('#page').fadeIn(300);
 	});
+}
+
+
+function agenda(evt) {
+	$(this).children('.infos').toggle();
 }
 
 

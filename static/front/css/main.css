@@ -53,8 +53,10 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #agenda {background: #000 url(/static/front/img/rideaux-right.png) no-repeat scroll 0px 0px; right: 0px; top: 0px; width: 250px;}
 #agenda li {margin: 10px 0; text-align: center;}
 #agenda h1 {text-align: right;}
-#agenda .place {font-size: 18px; display: block;}
-#agenda .title, #agenda .date {color: #ccc; display: block; font-size: 14px;}
+#agenda .place {font-size: 18px;}
+#agenda .title, #agenda .date {color: #ccc; font-size: 14px;}
+#agenda .infos {display: none;}
+#agenda li:first-child .infos {display: block;}
 
 #logos {opacity: 0.5; position: absolute; right: 20px; top: 640px; z-index: 19;}
 #logos img {display: block; margin: 5px 0;}
