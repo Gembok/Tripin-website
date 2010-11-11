@@ -35,20 +35,22 @@ class AppHandler(webapp.RequestHandler):
         view.render(self, filename, data)
 
 
+# Helpers
+def agenda(nb):
+    agenda = models.Agenda.all().filter('date >=', datetime.now()).fetch(nb)
+    agendad = utils.to_dicts(agenda)
+    for item in agendad:
+        item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y/%m/%d %H:%M')
+    return agendad
+
+
 class MainHandler(AppHandler):
     def get(self):
         self.render('main.html', {
-            'agenda': self.agenda(),
+            'agenda': agenda(3),
             'player': self.player(),
             'links': self.links()
         })
-    
-    def agenda(self):
-        agenda = models.Agenda.all().filter('date >=', datetime.now()).fetch(100)
-        agendad = utils.to_dicts(agenda)
-        for item in agendad:
-            item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y/%m/%d %H:%M')
-        return agendad
     
     def player(self):
         try:
@@ -77,8 +79,10 @@ class HomeHandler(AppHandler):
     
     def news(self):
         news = models.News.all().get()
+        if not news:
+            return False
         return utils.to_dict(news)
-        
+    
     def contacts(self):
         contacts = models.Contact.all().fetch(10)
         return utils.to_dicts(contacts)
@@ -88,10 +92,19 @@ class HomeHandler(AppHandler):
         return utils.to_dicts(res)
 
 
+class AgendaHandler(AppHandler):
+    def get(self):
+        self.renderjson('agenda.html', {'agenda': agenda(100)})
+
+
 class BioHandler(AppHandler):
     def get(self):
         bio = models.Biography.all().get()
-        self.renderjson('bio.html', utils.to_dict(bio))
+        if not bio:
+            biod = {}
+        else:
+            biod = utils.to_dict(bio)
+        self.renderjson('bio.html', biod)
 
 
 class MusicHandler(AppHandler):
@@ -108,7 +121,10 @@ class MusicHandler(AppHandler):
         albums = utils.to_dicts(albums)
         for item in albums:
             item['date'] = datetime.fromtimestamp(item['date']).strftime('%Y')
-            item['artwork'] = images.get_serving_url(item['artwork'], 104, crop=True)
+            try:
+                item['artwork'] = images.get_serving_url(item['artwork'], 104, crop=True)
+            except images.BlobKeyRequiredError:
+                item['artwork'] = ''
         return albums
     
     def album(self, id):
@@ -119,7 +135,10 @@ class MusicHandler(AppHandler):
         if not album:
             return False
         albumd = utils.to_dict(album)
-        albumd['artwork'] = images.get_serving_url(albumd['artwork'], 200)
+        try:
+            albumd['artwork'] = images.get_serving_url(albumd['artwork'], 200)
+        except images.BlobKeyRequiredError:
+            albumd['artwork'] = ''
         albumd['songs'] = self.songs(album)
         return albumd
     
@@ -312,5 +331,6 @@ routes = [
     (r'^/newsletter/?(\w+)?/?', NewsletterHandler),
     (r'^/guestbook/?', GuestbookHandler),
     (r'^/home/?', HomeHandler),
+    (r'^/agenda/?', AgendaHandler),
     (r'^/', MainHandler)
 ]

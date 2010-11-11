@@ -1,16 +1,6 @@
 $(function() {
 	window.location.hash = '#/home';
 	
-	var media = ['photos', 'videos', 'presse'];
-	
-	for (x in media) {
-		var med = media[x];
-		var logo = $('#media-'+med);
-		var text = $('span#'+med);
-		logo.live('mouseenter', function() { text.fadeIn(200);});
-		logo.live('mouseleave', function() { text.fadeOut(300);});
-	}
-	
 	$('#agenda li').click(agenda);
 	
 	// $(".gallery").live('click', function(){ $(this).fancybox(); });

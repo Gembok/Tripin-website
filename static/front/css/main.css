@@ -51,12 +51,11 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 
 
 #agenda {background: #000 url(/static/front/img/rideaux-right.png) no-repeat scroll 0px 0px; right: 0px; top: 0px; width: 250px;}
-#agenda li {margin: 10px 0; text-align: center;}
-#agenda h1 {text-align: right;}
-#agenda .place {font-size: 18px;}
-#agenda .title, #agenda .date {color: #ccc; font-size: 14px;}
-#agenda .infos {display: none;}
-#agenda li:first-child .infos {display: block;}
+.agenda li {margin: 10px 0; text-align: center;}
+.agenda h1 {text-align: right;}
+.agenda .place {font-size: 18px;}
+.agenda .title, .agenda .date {color: #ccc; font-size: 14px;}
+.agenda .all {font-size: 12px;}
 
 #logos {opacity: 0.5; position: absolute; right: 20px; top: 640px; z-index: 19;}
 #logos img {display: block; margin: 5px 0;}
@@ -81,13 +80,12 @@ body {background-color: #000; color: #eee; font: 16px "Lucida Grande", "Lucida S
 #album img {float: left; margin: 0 15px 0 0;}
 #album ul {margin-left: 215px;}
 
+#texts {font-size: 12px; width: 170px;}
+#text {margin-left: 190px;}
 #text h1 {font-size: 20px;}
-#text h2 {color: #ccc; font-size: 18px;}
 
 #choice {margin: 0 auto; text-align: center; width: 360px;}
-#choice a {color: #ccc; display: block; float: left; margin: 16px 0; height: 65px; width: 120px;}
-#choice span {display: none;}
-#choice img {height: 65px;}
+#choice a {display: block; float: left; margin: 16px 0; width: 120px;}
 
 #photo h2 {display: inline;}
 #photo h3 {display: inline;}

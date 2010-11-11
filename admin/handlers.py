@@ -38,7 +38,7 @@ class ListHandler(AdminHandler):
         if not model:
             model = DEFAULT
         adminmodel = self.get_model(model)
-        items = adminmodel.model.all().fetch(10)
+        items = adminmodel.model.all().fetch(100)
         self.render('list.html', {
             'fields': [{'name': i} for i in adminmodel.show],
             'items': utils.to_dicts_list(items, adminmodel.show)
